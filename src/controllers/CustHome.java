@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -16,7 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import schema.Customers;
+import javafx.stage.Stage;
+import model.Customers;
 
 /**
  * FXML Controller class
@@ -25,6 +27,8 @@ import schema.Customers;
  */
 public class CustHome implements Initializable {
 
+    Stage stage;
+    Parent scene;
     @FXML
     private TableView<Customers> CustTable;
     @FXML
@@ -49,17 +53,23 @@ public class CustHome implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
 
     @FXML
-    private void createCust(ActionEvent event) {
-        //Send to create customer page to create object
+    private void createCust(ActionEvent event) throws IOException {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/views/CreateCust.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML
-    private void modifyCust(ActionEvent event) {
-        //Send to Modify Cust object to change info
+    private void modifyCust(ActionEvent event) throws IOException {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/views/ModifyCust.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML
