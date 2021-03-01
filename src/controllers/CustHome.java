@@ -76,8 +76,17 @@ public class CustHome implements Initializable {
 
     @FXML
     private void modifyCust(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/views/ModifyCust.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/ModifyCust.fxml"));
+        loader.load();
+
+        ModifyCustController MCController = loader.getController();
+        MCController.setCustomer(CustTable.getSelectionModel().getSelectedItem());
+        schemaAdmin.getObservableListOfCust().remove(CustTable.getSelectionModel().getSelectedItem());
+
+
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
+        Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
     }

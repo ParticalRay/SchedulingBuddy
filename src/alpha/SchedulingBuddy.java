@@ -26,7 +26,7 @@ public class SchedulingBuddy extends Application{
         Customers test1 = new Customers(1, "Jon Makepeace", "USA Bitches", "98312", "3365969982");
         Customers test2 = new Customers(2, "Wyatt the fag", "USA Bitches", "98312", "some ohio number");
         Customers test3 = new Customers(3, "Mystic the Ginger", "Northern Forest of US(Canada)", "canadian zip", "some canadian number");
-        Customers test4 = new Customers(4, "Awon the majestic", "North Africa", "654789", "1234567890");
+        Customers test4 = new Customers(4, "Awon the majestic", "North Africa", "African Zip", "1234567890");
         schemaAdmin.addCust(test1);
         schemaAdmin.addCust(test2);
         schemaAdmin.addCust(test3);
