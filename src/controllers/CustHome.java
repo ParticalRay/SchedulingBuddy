@@ -17,8 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customers;
+import model.schemaAdmin;
 
 /**
  * FXML Controller class
@@ -29,8 +31,7 @@ public class CustHome implements Initializable {
 
     Stage stage;
     Parent scene;
-    @FXML
-    private TableView<Customers> CustTable;
+    
     @FXML
     private TableColumn<Customers, Integer> IDCol;
     @FXML
@@ -38,9 +39,13 @@ public class CustHome implements Initializable {
     @FXML
     private TableColumn<Customers, String> AddressCol;
     @FXML
-    private TableColumn<Customers, Integer> ZipCol;
+    private TableColumn<Customers, String> ZipCol;
     @FXML
-    private TableColumn<Customers, Integer> PhoneCol;
+    private TableColumn<Customers, String> PhoneCol;
+    
+    @FXML
+    private TableView<Customers> CustTable;
+    
     @FXML
     private Button createCustButton;
     @FXML
@@ -53,7 +58,12 @@ public class CustHome implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        CustTable.setItems(schemaAdmin.getObservableListOfCust());
+        IDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        NameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        AddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        ZipCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
+        PhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
     }    
 
     @FXML

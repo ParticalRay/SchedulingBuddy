@@ -12,45 +12,51 @@ import java.util.Date;
  * @author jonat
  */
 public class Customers {
-    private int Customer_ID;
-    private String Customer_Name;
-    private String Address;
-    private String Postal_Code;
-    private String Phone;
+    private final int id;
+    private String name;
+    private String address;
+    private String postal;
+    private String phone;
     private Date Create_Date;
     private String Created_By;
     private Date Last_Update;
     private String Last_Updated_By;
     private int Division_ID;//FK
 
-    public Customers(int Customer_ID, String Customer_Name, String Address, String Postal_Code, String Phone) {
-        this.Customer_ID = Customer_ID;
-        this.Customer_Name = Customer_Name;
-        this.Address = Address;
-        this.Postal_Code = Postal_Code;
-        this.Phone = Phone;
+    public Customers(int id, String name, String address, String postal, String phone) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postal = postal;
+        this.phone = phone;
     }//Everything else is done in the back end
-
     
-    
-    public int getCustomer_ID() {
-        return Customer_ID;
+    @Override
+    public String toString(){
+        return getID()+ ", " + getName() + ", " + getAddress() + ", "
+                + getPostal() +", " + getPhone();  
     }
 
-    public String getCustomer_Name() {
-        return Customer_Name;
+    
+    
+    public final int getID() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
-    public String getPostal_Code() {
-        return Postal_Code;
+    public String getPostal() {
+        return postal;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public Date getCreate_Date() {
@@ -73,24 +79,21 @@ public class Customers {
         return Division_ID;
     }
 
-    public void setCustomer_ID(int Customer_ID) {
-        this.Customer_ID = Customer_ID;
-    }
 
     public void setCustomer_Name(String Customer_Name) {
-        this.Customer_Name = Customer_Name;
+        this.name = Customer_Name;
     }
 
     public void setAddress(String Address) {
-        this.Address = Address;
+        this.address = Address;
     }
 
     public void setPostal_Code(String Postal_Code) {
-        this.Postal_Code = Postal_Code;
+        this.postal = Postal_Code;
     }
 
     public void setPhone(String Phone) {
-        this.Phone = Phone;
+        this.phone = Phone;
     }
 
     public void setCreate_Date(Date Create_Date) {
