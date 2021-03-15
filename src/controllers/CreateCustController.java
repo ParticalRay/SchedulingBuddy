@@ -63,6 +63,7 @@ public class CreateCustController implements Initializable {
         String phone = phoneText.getText();
         Customers newCust = new Customers(id,name,address,zip,phone);
         schemaAdmin.addCust(newCust);
+        
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
         stage.setScene(new Scene(scene));
