@@ -17,6 +17,10 @@ public class schemaAdmin {
     public static ObservableList<Users> getObservableListOfUsers() {
         return ObservableListOfUsers;
     }
+    
+    public static ObservableList<Appointments> getObservableListOfAppt(){
+        return ObservableListOfAppts;
+    }
 
     /*
     Pre-Thoughts,
@@ -34,7 +38,8 @@ public class schemaAdmin {
     
     private static ObservableList<Users> ObservableListOfUsers = FXCollections.observableArrayList();
     private static ObservableList<Customers> ObservableListOfCust = FXCollections.observableArrayList();
-    
+    private static ObservableList<Appointments> ObservableListOfAppts = FXCollections.observableArrayList();    
+ 
     public static void addCust(Customers newCust){
         getObservableListOfCust().add(newCust);
     }
@@ -42,5 +47,10 @@ public class schemaAdmin {
     public static void addUser(Users newUser){
         getObservableListOfUsers().add(newUser);
     }
+
+    public static void addAppts(Appointments appt){
+        getObservableListOfAppt().add(appt);
+    }
+    
     
 }

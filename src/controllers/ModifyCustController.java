@@ -71,6 +71,12 @@ public class ModifyCustController implements Initializable {
 
     @FXML
     private void resetPage(ActionEvent event) {
+        this.cust = cust;
+        IDText.setText(String.valueOf(cust.getID()));
+        nameText.setText(String.valueOf(cust.getName()));
+        addressText.setText(String.valueOf(cust.getAddress()));
+        zipText.setText(String.valueOf(cust.getPostal()));
+        phoneText.setText(String.valueOf(cust.getPhone()));
     }
 
     @FXML

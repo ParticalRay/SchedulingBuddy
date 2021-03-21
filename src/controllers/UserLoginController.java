@@ -7,6 +7,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -35,6 +37,8 @@ public class UserLoginController implements Initializable {
     private Button submitButton;
     @FXML
     private Button CancelButton;
+    @FXML
+    private Text zoneID;
 
     /**
      * Initializes the controller class.
@@ -42,6 +46,9 @@ public class UserLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        String langInUse = Locale.getDefault().toString().split("_")[0];
+        String region = Locale.getDefault().toString().split("_")[1];
+        zoneID.setText(region);
     }    
 
     @FXML

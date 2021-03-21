@@ -52,6 +52,8 @@ public class CustHome implements Initializable {
     private Button ModifyCustButton;
     @FXML
     private Button DeleteCustButton;
+    @FXML
+    private Button createApptButton;
 
     /**
      * Initializes the controller class.
@@ -94,6 +96,14 @@ public class CustHome implements Initializable {
     @FXML
     private void deleteCust(ActionEvent event) {
         
+    }
+
+    @FXML
+    private void createAppt(ActionEvent event) throws IOException {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/views/AppointmentCreate.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package alpha;
 
+import java.util.Locale;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,11 +19,14 @@ import model.schemaAdmin;
  * @author jonat
  */
 public class SchedulingBuddy extends Application{
-
+    
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        
         Customers test1 = new Customers(1, "Jon Makepeace", "USA Bitches", "98312", "3365969982");
         Customers test2 = new Customers(2, "Wyatt the fag", "USA Bitches", "98312", "some ohio number");
         Customers test3 = new Customers(3, "Mystic the Ginger", "Northern Forest of US(Canada)", "canadian zip", "some canadian number");
@@ -35,6 +39,10 @@ public class SchedulingBuddy extends Application{
         System.out.println(test2);
         System.out.println(test3);
         System.out.println(test4);
+        
+        
+        System.out.println(Locale.getDefault());//code to get locale info
+        
         
         launch(args);
     }

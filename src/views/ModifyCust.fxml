@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyCustController">
    <children>
       <VBox layoutX="16.0" layoutY="45.0" prefHeight="297.0" prefWidth="569.0">
@@ -16,7 +15,7 @@
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                  <TextField fx:id="IDText">
+                  <TextField fx:id="IDText" editable="false">
                      <HBox.margin>
                         <Insets bottom="5.0" left="65.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -78,6 +77,6 @@
             </HBox>
          </children>
       </VBox>
-      <Text layoutX="247.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Customer Page" />
+      <Text layoutX="247.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Customer Page" />
    </children>
 </AnchorPane>
