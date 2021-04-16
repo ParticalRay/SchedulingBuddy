@@ -8,24 +8,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CreateCustController">
    <children>
       <VBox layoutX="16.0" layoutY="45.0" prefHeight="297.0" prefWidth="569.0">
          <children>
+            <HBox prefHeight="50.0" prefWidth="569.0" />
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                  <TextField fx:id="IDText">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="65.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox prefHeight="50.0" prefWidth="569.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="nameText">
                      <HBox.margin>
                         <Insets bottom="5.0" left="45.0" right="5.0" top="5.0" />
@@ -35,8 +28,21 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="addressText">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="35.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="State">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="stateField">
                      <HBox.margin>
                         <Insets bottom="5.0" left="35.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -45,7 +51,10 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="zipText">
                      <HBox.margin>
                         <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
@@ -55,7 +64,10 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="phoneText" />
                </children>
             </HBox>

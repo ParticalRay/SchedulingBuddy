@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
+import controllers.CreateCustController;
 
 /**
  * FXML Controller class
@@ -63,6 +64,7 @@ public class ModifyCustController implements Initializable {
         String phone = phoneText.getText();
         Customers newCust = new Customers(id,name,address,zip,phone);
         schemaAdmin.addCust(newCust);
+        //CreateCustController.createAndUpdate(newCust);
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
         stage.setScene(new Scene(scene));

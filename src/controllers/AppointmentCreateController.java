@@ -73,6 +73,7 @@ public class AppointmentCreateController implements Initializable {
 
     @FXML
     private void confirmAppointment(ActionEvent event) {
+        
     }
 
     @FXML

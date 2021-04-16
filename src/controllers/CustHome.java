@@ -7,7 +7,15 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
+import alpha.SchedulingBuddy;
 
 /**
  * FXML Controller class
@@ -55,11 +64,22 @@ public class CustHome implements Initializable {
     @FXML
     private Button createApptButton;
 
+    
+    
+    
+    
+    
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL ul, ResourceBundle rb) {
+        schemaAdmin.getObservableListOfCust().clear();
+        try{
+            SchedulingBuddy.connectAndUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         CustTable.setItems(schemaAdmin.getObservableListOfCust());
         IDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
         NameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -76,6 +96,10 @@ public class CustHome implements Initializable {
         stage.show();
     }
 
+    
+    
+    
+    
     @FXML
     private void modifyCust(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -83,8 +107,36 @@ public class CustHome implements Initializable {
         loader.load();
 
         ModifyCustController MCController = loader.getController();
-        MCController.setCustomer(CustTable.getSelectionModel().getSelectedItem());
-        schemaAdmin.getObservableListOfCust().remove(CustTable.getSelectionModel().getSelectedItem());
+        Customers cust = CustTable.getSelectionModel().getSelectedItem();
+        MCController.setCustomer(cust);
+        schemaAdmin.getObservableListOfCust().remove(cust);
+        String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
+        String user = "U07jSy";
+        String pass = "53689047995";
+        String dbName = "WJ07jSy";
+        String port = "3306";
+        String url = "jdbc" + ":mysql:" + serverName;
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String delete = "delete * from customers where Customer_ID = ?";
+        try{
+            conn = DriverManager.getConnection(url, user, pass);
+            System.out.println(conn);
+            stmt = conn.prepareStatement(delete);
+            String s = cust.getID() + "";
+            stmt.setString(1, s);
+            
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally{
+            try{
+                stmt.close();
+                conn.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
@@ -93,17 +145,58 @@ public class CustHome implements Initializable {
         stage.show();
     }
 
+    
+    public Connection getStarted() throws SQLException{
+        String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
+        String user = "U07jSy";
+        String pass = "53689047995";
+        String dbName = "WJ07jSy";
+        String port = "3306";
+        String url = "jdbc" + ":mysql:" + serverName;
+        Connection conn = DriverManager.getConnection(url, user, pass);
+        return conn;
+    }
+    
     @FXML
     private void deleteCust(ActionEvent event) {
+        Customers cust = CustTable.getSelectionModel().getSelectedItem();
+        deleteCustInDb(cust);
         
     }
 
     @FXML
     private void createAppt(ActionEvent event) throws IOException {
+        /*
+        Here we need to create an appt, then send to the db to receive the correct
+            appt ID, then bring it back and auto fill the info with what we know.
+        */
+        
+        Customers c = CustTable.getSelectionModel().getSelectedItem();
+        
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/views/AppointmentCreate.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
     
+    
+    private void deleteCustInDb(Customers c){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String delete = "delete from customers where Customer_ID = ?";
+        try{
+            conn = getStarted();
+            System.out.println(conn);
+            stmt = conn.prepareStatement(delete);
+            String s = c.getID() + "";
+            stmt.setString(1, s);
+            stmt.execute();
+            schemaAdmin.getObservableListOfCust().remove(c);
+            stmt.close();
+            conn.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

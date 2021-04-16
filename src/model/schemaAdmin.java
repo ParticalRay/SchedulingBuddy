@@ -21,6 +21,16 @@ public class schemaAdmin {
     public static ObservableList<Appointments> getObservableListOfAppt(){
         return ObservableListOfAppts;
     }
+    
+    private static Users currentUser = null;
+    
+    public static Users getUser(){
+        return currentUser;
+    }
+    
+    public static void setUser(Users u){
+        currentUser = u;
+    }
 
     /*
     Pre-Thoughts,

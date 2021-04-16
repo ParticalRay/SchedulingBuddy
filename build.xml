@@ -9,6 +9,20 @@
 <!-- in the project's Project Properties dialog box.-->
 <project name="SchedulingBuddy" default="default" basedir=".">
     <description>Builds, tests, and runs the project SchedulingBuddy.</description>
+        <target name="init-fx-tasks">
+		<path id="fxant">
+			<filelist>
+				<file name="${java.home}\..\lib\ant-javafx.jar"/> <!-- wrong path -->
+				<file name="${java.home}\lib\jfxrt.jar"/> <!-- wrong path -->
+			</filelist>
+		</path>
+	
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"      
+			uri="javafx:com.sun.javafx.tools.ant"
+			classpathref="fxant"/>
+	</target>
+    
+    
     <import file="nbproject/build-impl.xml"/>
     <!--
 
