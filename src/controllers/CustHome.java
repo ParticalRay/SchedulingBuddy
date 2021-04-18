@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import alpha.SchedulingBuddy;
+import javafx.scene.control.Alert;
 
 /**
  * FXML Controller class
@@ -110,33 +111,7 @@ public class CustHome implements Initializable {
         Customers cust = CustTable.getSelectionModel().getSelectedItem();
         MCController.setCustomer(cust);
         schemaAdmin.getObservableListOfCust().remove(cust);
-        String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
-        String user = "U07jSy";
-        String pass = "53689047995";
-        String dbName = "WJ07jSy";
-        String port = "3306";
-        String url = "jdbc" + ":mysql:" + serverName;
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        String delete = "delete * from customers where Customer_ID = ?";
-        try{
-            conn = DriverManager.getConnection(url, user, pass);
-            System.out.println(conn);
-            stmt = conn.prepareStatement(delete);
-            String s = cust.getID() + "";
-            stmt.setString(1, s);
-            
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally{
-            try{
-                stmt.close();
-                conn.close();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
+        
 
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
@@ -169,9 +144,24 @@ public class CustHome implements Initializable {
         /*
         Here we need to create an appt, then send to the db to receive the correct
             appt ID, then bring it back and auto fill the info with what we know.
+            Step 1: Get customer ID the appt is attached to.
+            Step 2: Get User Id attached to the creation
+            Step 3: Get the contact the appt is going for. (Default 1)
+            
         */
         
-        Customers c = CustTable.getSelectionModel().getSelectedItem();
+        int c = CustTable.getSelectionModel().getSelectedItem().getID();
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/AppointmentCreate.fxml"));
+            loader.load();
+            AppointmentCreateController apptCController = loader.getController();
+            apptCController.getCustID(c);
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select a customer before creating an appointment");
+            alert.showAndWait();
+        }
         
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/views/AppointmentCreate.fxml"));

@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,8 +110,8 @@ public class CreateCustController implements Initializable {
         String dbName = "WJ07jSy";
         String port = "3306";
         String url = "jdbc" + ":mysql:" + serverName;
-        Connection conn = null;
-        PreparedStatement stmt = null;
+        Connection conn;
+        PreparedStatement stmt;
         String insert = "INSERT INTO customers (Customer_Name, Phone,Address,Postal_Code, Division_ID, Created_By) values(?,?,?,?,42,?)";
         
         try{

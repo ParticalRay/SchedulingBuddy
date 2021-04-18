@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.sql.Connection;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,7 +20,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
-import controllers.CreateCustController;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 /**
  * FXML Controller class
@@ -64,7 +67,7 @@ public class ModifyCustController implements Initializable {
         String phone = phoneText.getText();
         Customers newCust = new Customers(id,name,address,zip,phone);
         schemaAdmin.addCust(newCust);
-        //CreateCustController.createAndUpdate(newCust);
+        updateCustInDb(newCust);
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
         stage.setScene(new Scene(scene));
@@ -90,6 +93,26 @@ public class ModifyCustController implements Initializable {
         stage.show();
     }
     
+    public void updateCustInDb(Customers c){
+        PreparedStatement stmt;
+        String update = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ? WHERE Customer_ID = ?";
+        
+        try {
+            Connection conn = getStarted();
+            String custID = c.getID() + "";
+            stmt = conn.prepareStatement(update);
+            stmt.setString(1, c.getName());
+            stmt.setString(2, c.getAddress());
+            stmt.setString(3, c.getPostal());
+            stmt.setString(4, c.getPhone());
+            stmt.setString(5, custID);
+            stmt.execute();
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
     public void setCustomer(Customers cust){
         this.cust = cust;
         IDText.setText(String.valueOf(cust.getID()));
@@ -97,8 +120,17 @@ public class ModifyCustController implements Initializable {
         addressText.setText(String.valueOf(cust.getAddress()));
         zipText.setText(String.valueOf(cust.getPostal()));
         phoneText.setText(String.valueOf(cust.getPhone()));
-        
-        
     }
+    
+    public Connection getStarted() throws SQLException{
+        String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
+        String user = "U07jSy";
+        String pass = "53689047995";
+        String dbName = "WJ07jSy";
+        String port = "3306";
+        String url = "jdbc" + ":mysql:" + serverName;
+        java.sql.Connection conn = DriverManager.getConnection(url, user, pass);
+        return conn;
+}
     
 }
