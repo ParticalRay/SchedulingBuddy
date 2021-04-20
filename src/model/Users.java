@@ -21,7 +21,11 @@ public class Users {
     private String Last_Updated_By;
 
     
-    public Users(String User_Name, String Password, Date Created_Date, String Created_By, Date Last_Update, String Last_Updated_By) {
+    
+    
+    
+    public Users(int User_ID,String User_Name, String Password, Date Created_Date, String Created_By, Date Last_Update, String Last_Updated_By) {
+        this.User_ID = User_ID;
         this.User_Name = User_Name;
         this.Password = Password;
         this.Created_Date = Created_Date;

@@ -19,6 +19,32 @@ public class Contacts {
         this.Contact_Name = name;
         this.Email = email;
     }
+
+    public int getContact_ID() {
+        return Contact_ID;
+    }
+
+    public String getContact_Name() {
+        return Contact_Name;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setContact_ID(int Contact_ID) {
+        this.Contact_ID = Contact_ID;
+    }
+
+    public void setContact_Name(String Contact_Name) {
+        this.Contact_Name = Contact_Name;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+ 
     
     
     

@@ -17,11 +17,11 @@ public class Appointments{
     private String Description;
     private String Location;
     private String Type;
-    private Date Start;
-    private Date End;
-    private Date Create_Date;
+    private String Start;
+    private String End;
+    private String Create_Date;
     private String Created_By;
-    private Date Last_Update;
+    private String Last_Update;
     private String Last_Updated_By;
     private int Customer_ID;//FK
     private int User_ID; //FK
@@ -32,7 +32,7 @@ public class Appointments{
         this.Location = Location;
     }
 
-    public Appointments(String Title, String Description, String Location, String Type, Date Start, Date End, String Created_By, int Customer_ID, int User_ID, int Contact_ID) {
+    public Appointments(String Title, String Description, String Location, String Type, String Start, String End, String Created_By, int Customer_ID, int User_ID, int Contact_ID) {
         this.Title = Title;
         this.Description = Description;
         this.Location = Location;
@@ -49,7 +49,7 @@ public class Appointments{
     
     
 
-    public Appointments(int Appointment_ID, String Title, String Description, String Location, String Type, Date Start, Date End, Date Create_Date, String Created_By, Date Last_Update, String Last_Updated_By, int Customer_ID, int User_ID, int Contact_ID) {
+    public Appointments(int Appointment_ID, String Title, String Description, String Location, String Type, String Start, String End, String Create_Date, String Created_By, String Last_Update, String Last_Updated_By, int Customer_ID, int User_ID, int Contact_ID) {
         this.Appointment_ID = Appointment_ID;
         this.Title = Title;
         this.Description = Description;
@@ -86,15 +86,15 @@ public class Appointments{
         this.Type = Type;
     }
 
-    public void setStart(Date Start) {
+    public void setStart(String Start) {
         this.Start = Start;
     }
 
-    public void setEnd(Date End) {
+    public void setEnd(String End) {
         this.End = End;
     }
 
-    public void setCreate_Date(Date Create_Date) {
+    public void setCreate_Date(String Create_Date) {
         this.Create_Date = Create_Date;
     }
 
@@ -102,7 +102,7 @@ public class Appointments{
         this.Created_By = Created_By;
     }
 
-    public void setLast_Update(Date Last_Update) {
+    public void setLast_Update(String Last_Update) {
         this.Last_Update = Last_Update;
     }
 
@@ -144,15 +144,15 @@ public class Appointments{
         return Type;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return Start;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return End;
     }
 
-    public Date getCreate_Date() {
+    public String getCreate_Date() {
         return Create_Date;
     }
 
@@ -160,7 +160,7 @@ public class Appointments{
         return Created_By;
     }
 
-    public Date getLast_Update() {
+    public String getLast_Update() {
         return Last_Update;
     }
 

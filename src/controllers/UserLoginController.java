@@ -82,13 +82,14 @@ public class UserLoginController implements Initializable {
 
             //Search database for valid info
             if (userName.equals(user) && password.equals(pass)){
+                int id = rs.getInt("User_ID");
                 Date createdDate = rs.getDate("Create_Date");
                 String createBy = rs.getString("Created_By");
                 Date lastUpdate = rs.getDate("Last_Update");
                 String lastUpdateBy = rs.getString("Last_Updated_By");
                 
                 
-                Users u = new Users(userName,password,createdDate,createBy,lastUpdate,lastUpdateBy);
+                Users u = new Users(id,userName,password,createdDate,createBy,lastUpdate,lastUpdateBy);
                 schemaAdmin.setUser(u);
                 stage = (Stage)((Button)event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));

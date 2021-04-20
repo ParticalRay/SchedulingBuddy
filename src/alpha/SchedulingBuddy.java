@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import java.sql.*;
+import model.Appointments;
 //int Customer_ID, String Customer_Name, String Address, String Postal_Code, String Phone
 /**
  *
@@ -71,6 +72,7 @@ public class SchedulingBuddy extends Application{
         
         ResultSet rs = stmt.executeQuery("select * from customers");
         
+        
         while (rs.next()){
             int id = rs.getInt(1);
             String name = rs.getString("Customer_Name");
@@ -85,8 +87,26 @@ public class SchedulingBuddy extends Application{
             Customers cx = new Customers(id, name, address, zip, phone, createDate, createBy, lastUpdate, lastUpdateBy, divisionID);
             
             schemaAdmin.addCust(cx);
-   
-            
+        }
+        
+        ResultSet rsAppt = stmt.executeQuery("select * from appointments");
+        while (rsAppt.next()){
+            int id = rsAppt.getInt("Appointment_ID");
+            String title = rsAppt.getString("Title");
+            String desc = rsAppt.getString("Description");
+            String loc = rsAppt.getString("Location");
+            String type = rsAppt.getString("Type");
+            String start = rsAppt.getString("Start");
+            String end = rsAppt.getString("End");
+            int custID = rsAppt.getInt("Customer_ID");
+            int userID = rsAppt.getInt("User_ID");
+            int contactID = rsAppt.getInt("Contact_ID");
+            String createDate = rsAppt.getString("Create_Date");
+            String createdBy = rsAppt.getString("Created_By");
+            String lastUpdate = rsAppt.getString("Last_Update");
+            String lastUpdateBy = rsAppt.getString("Last_Updated_By");
+            Appointments appt = new Appointments(id,title,desc,loc,type,start,end,createDate,createdBy,lastUpdate,lastUpdateBy,custID,userID,contactID);
+            schemaAdmin.addAppts(appt);
         }
 
     }

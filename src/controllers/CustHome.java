@@ -31,6 +31,7 @@ import model.Customers;
 import model.schemaAdmin;
 import alpha.SchedulingBuddy;
 import javafx.scene.control.Alert;
+import model.Appointments;
 
 /**
  * FXML Controller class
@@ -64,18 +65,37 @@ public class CustHome implements Initializable {
     private Button DeleteCustButton;
     @FXML
     private Button createApptButton;
-
-    
-    
-    
-    
-    
+    @FXML
+    private TableView<Appointments> apptTable;
+    @FXML
+    private Button modifyApptButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private TableColumn<Appointments, Integer> apptIDCol;
+    @FXML
+    private TableColumn<Appointments, String> titleCol;
+    @FXML
+    private TableColumn<Appointments, String> descCol;
+    @FXML
+    private TableColumn<Appointments, String> locCol;
+    @FXML
+    private TableColumn<Appointments, Integer> contactCol;
+    @FXML
+    private TableColumn<Appointments, Integer> typeCol;
+    @FXML
+    private TableColumn<Appointments, String> startDateCol;
+    @FXML
+    private TableColumn<Appointments, String> endDateCol;
+    @FXML
+    private TableColumn<Appointments, Integer> custIDCol;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL ul, ResourceBundle rb) {
         schemaAdmin.getObservableListOfCust().clear();
+        schemaAdmin.getObservableListOfAppt().clear();
         try{
             SchedulingBuddy.connectAndUpdate();
         }catch (SQLException e){
@@ -87,6 +107,17 @@ public class CustHome implements Initializable {
         AddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         ZipCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
         PhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        
+        apptTable.setItems(schemaAdmin.getObservableListOfAppt());
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        locCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("Contact_ID"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        startDateCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
+        endDateCol.setCellValueFactory(new PropertyValueFactory<>("End"));
+        custIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
     }    
 
     @FXML
@@ -150,36 +181,52 @@ public class CustHome implements Initializable {
             
         */
         
-        int c = CustTable.getSelectionModel().getSelectedItem().getID();
+        Customers c = CustTable.getSelectionModel().getSelectedItem();
+        System.out.println("Cust Home got: " + c);
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/views/AppointmentCreate.fxml"));
             loader.load();
             AppointmentCreateController apptCController = loader.getController();
             apptCController.getCustID(c);
-        }catch(Exception e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Please select a customer before creating an appointment");
-            alert.showAndWait();
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();
+            
+            }catch(Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please select a customer before creating an appointment");
+                alert.showAndWait();
         }
         
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/views/AppointmentCreate.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        
     }
     
     
     private void deleteCustInDb(Customers c){
         Connection conn = null;
         PreparedStatement stmt = null;
-        String delete = "delete from customers where Customer_ID = ?";
+        String deleteCust = "delete from customers where Customer_ID = ?";
+        String deleteAppt = "delete from appointments where Customer_ID = ?";
         try{
             conn = getStarted();
             System.out.println(conn);
-            stmt = conn.prepareStatement(delete);
-            String s = c.getID() + "";
-            stmt.setString(1, s);
+            stmt = conn.prepareStatement(deleteAppt);
+            stmt.setInt(1, c.getID());
+            stmt.execute();
+            
+            stmt.close();
+            conn.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        try{
+            conn = getStarted();
+            System.out.println(conn);
+            stmt = conn.prepareStatement(deleteCust);
+            stmt.setInt(1, c.getID());
             stmt.execute();
             schemaAdmin.getObservableListOfCust().remove(c);
             stmt.close();
@@ -188,5 +235,13 @@ public class CustHome implements Initializable {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void modifyAppt(ActionEvent event) {
+    }
+
+    @FXML
+    private void exit(ActionEvent event) {
     }
 }
