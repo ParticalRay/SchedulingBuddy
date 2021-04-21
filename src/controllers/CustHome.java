@@ -136,33 +136,47 @@ public class CustHome implements Initializable {
     
     @FXML
     private void modifyCust(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/views/ModifyCust.fxml"));
-        loader.load();
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/ModifyCust.fxml"));
+            loader.load();
 
-        ModifyCustController MCController = loader.getController();
-        Customers cust = CustTable.getSelectionModel().getSelectedItem();
-        MCController.setCustomer(cust);
-        schemaAdmin.getObservableListOfCust().remove(cust);
-        
+            ModifyCustController MCController = loader.getController();
+            Customers cust = CustTable.getSelectionModel().getSelectedItem();
+            MCController.setCustomer(cust);
+            schemaAdmin.getObservableListOfCust().remove(cust);
 
 
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
-        Parent scene = loader.getRoot();
-        stage.setScene(new Scene(scene));
-        stage.show();
+
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select a customer to modify");
+            alert.showAndWait();
+        }
     }
 
     
     public Connection getStarted() throws SQLException{
-        String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
-        String user = "U07jSy";
-        String pass = "53689047995";
-        String dbName = "WJ07jSy";
-        String port = "3306";
-        String url = "jdbc" + ":mysql:" + serverName;
-        Connection conn = DriverManager.getConnection(url, user, pass);
-        return conn;
+        try{
+            String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
+            String user = "U07jSy";
+            String pass = "53689047995";
+            String dbName = "WJ07jSy";
+            String port = "3306";
+            String url = "jdbc" + ":mysql:" + serverName;
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            return conn;
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Database connection info is wrong");
+            alert.showAndWait();
+            Connection c = null;
+            return c;
+        }
     }
     
     @FXML
@@ -238,6 +252,24 @@ public class CustHome implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    private void deleteAppt(Appointments a){
+        String deleteAppt = "delete from appointments where Appointment_ID = ?";
+        schemaAdmin.getObservableListOfAppt().remove(a);
+        try{
+            Connection conn = getStarted();
+            System.out.println(conn);
+            PreparedStatement stmt = conn.prepareStatement(deleteAppt);
+            stmt.setInt(1, a.getAppointment_ID());
+            stmt.execute();
+            
+            stmt.close();
+            conn.close();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void modifyAppt(ActionEvent event) throws IOException {
@@ -266,5 +298,7 @@ public class CustHome implements Initializable {
 
     @FXML
     private void deleteAppt(ActionEvent event) {
+        Appointments apt = apptTable.getSelectionModel().getSelectedItem();
+        deleteAppt(apt);
     }
 }

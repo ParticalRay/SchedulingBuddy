@@ -223,14 +223,14 @@ public class ModifyAppointmentController implements Initializable {
         int userID = schemaAdmin.getUser().getUser_ID();
 
         Appointments appt = new Appointments(title,desc,loc,type, startDateTime,
-                endDateTime,createdBy,currentCustID.getID(),userID,contactsID);
+                endDateTime,createdBy,getCurrentAppt().getCustomer_ID(),userID,contactsID);
         schemaAdmin.addAppts(appt);
         
         
         PreparedStatement stmt;
-        String insert = "INSERT INTO appointments (Title, Description, Location, Type, Start, "
-                    + "End, Created_By, Last_Updated_By, Customer_ID, User_ID, Contact_ID) "
-                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String insert = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, "
+                    + "End = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? "
+                    + "WHERE Appointment_ID = ?" ;
         
         try{
             Connection conn = getStarted();
@@ -242,10 +242,11 @@ public class ModifyAppointmentController implements Initializable {
             stmt.setString(5, startDateTime);
             stmt.setString(6, endDateTime);
             stmt.setString(7, createdBy);
-            stmt.setString(8, createdBy);
-            stmt.setInt(9, currentCustID.getID());
-            stmt.setInt(10, userID);
-            stmt.setInt(11, contactsID);
+            stmt.setInt(8, getCurrentAppt().getCustomer_ID());
+            stmt.setInt(9, userID);
+            stmt.setInt(10, contactsID);
+            stmt.setInt(11, getCurrentAppt().getAppointment_ID());
+            System.out.println(stmt);
             stmt.execute();
         }catch(SQLException e){
             System.out.println(e);
