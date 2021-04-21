@@ -93,15 +93,23 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="deleteApptButton" mnemonicParsing="false" onAction="#deleteAppt" text="Delete Appointment">
+                           <HBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                         </Button>
                         <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exit" text="Exit">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets bottom="5.0" left="400.0" right="5.0" top="5.0" />
+                              <Insets bottom="20.0" left="350.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Button>
                      </children>

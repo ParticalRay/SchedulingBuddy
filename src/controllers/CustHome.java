@@ -89,6 +89,8 @@ public class CustHome implements Initializable {
     private TableColumn<Appointments, String> endDateCol;
     @FXML
     private TableColumn<Appointments, Integer> custIDCol;
+    @FXML
+    private Button deleteApptButton;
     /**
      * Initializes the controller class.
      */
@@ -238,10 +240,31 @@ public class CustHome implements Initializable {
     }
 
     @FXML
-    private void modifyAppt(ActionEvent event) {
+    private void modifyAppt(ActionEvent event) throws IOException {
+        Appointments appt = apptTable.getSelectionModel().getSelectedItem();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/ModifyAppointment.fxml"));
+        loader.load();
+
+        ModifyAppointmentController MAController = loader.getController();
+        
+        MAController.setCurrentAppt(appt);
+
+
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
+        stage.show();
+        
+        
     }
 
     @FXML
     private void exit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    private void deleteAppt(ActionEvent event) {
     }
 }
