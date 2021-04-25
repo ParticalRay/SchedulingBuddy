@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppointmentCreateController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppointmentCreateController">
    <children>
       <GridPane hgap="10.0" layoutX="22.0" layoutY="68.0" prefHeight="273.0" prefWidth="508.0">
         <columnConstraints>
@@ -32,14 +32,14 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Title" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="2" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Location" GridPane.rowIndex="3" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" GridPane.rowIndex="4" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="5" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" GridPane.rowIndex="6" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Name" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Text fx:id="idTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment ID" />
+            <Text fx:id="aptTitleTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" GridPane.rowIndex="1" />
+            <Text fx:id="descTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="2" />
+            <Text fx:id="localTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Location" GridPane.rowIndex="3" />
+            <Text fx:id="typeTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" GridPane.rowIndex="4" />
+            <Text fx:id="startDateTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" GridPane.rowIndex="5" />
+            <Text fx:id="endDateTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date" GridPane.rowIndex="6" />
+            <Text fx:id="contactTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Name" GridPane.columnIndex="2" GridPane.rowIndex="5" />
             <TextField fx:id="apptID" disable="true" GridPane.columnIndex="1" />
             <TextField fx:id="titleBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="DesBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -49,12 +49,12 @@
             <DatePicker fx:id="endDate" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <ComboBox fx:id="startCombo" prefWidth="150.0" GridPane.columnIndex="3" />
             <ComboBox fx:id="endCombo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" GridPane.columnIndex="2" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Text fx:id="startTimeTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" GridPane.columnIndex="2" />
+            <Text fx:id="endTimeTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <ComboBox fx:id="contactsCombo" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <Text layoutX="104.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment Creator">
+      <Text fx:id="titleTextTrans" layoutX="104.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointment Creator">
          <font>
             <Font size="18.0" />
          </font>

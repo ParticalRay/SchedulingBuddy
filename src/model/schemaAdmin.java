@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import javafx.collections.FXCollections;
@@ -14,38 +10,51 @@ import javafx.collections.ObservableList;
  */
 public class schemaAdmin {
 
+    /**
+     *
+     * @return
+     */
     public static ObservableList<Users> getObservableListOfUsers() {
         return ObservableListOfUsers;
     }
     
+    /**
+     *
+     * @return
+     */
     public static ObservableList<Appointments> getObservableListOfAppt(){
         return ObservableListOfAppts;
     }
     
+    /**
+     *
+     * @return
+     */
     public static ObservableList<Contacts> getObservableListOfContacts(){
         return ObservableListOfContacts;
     }
     
     private static Users currentUser;
     
+    /**
+     *
+     * @return
+     */
     public static Users getUser(){
         return currentUser;
     }
     
+    /**
+     *
+     * @param u
+     */
     public static void setUser(Users u){
         currentUser = u;
     }
     
-    
-
-    /*
-    Pre-Thoughts,
-    schemaAdmin will contain all info related to all classes and
-    organize it to be pushed onto the DB. schemaAdmin must
-    also be able to pull from the DB for use. 
-    Specifics include:
-    GetList of users, and their unique name and ID
-    for the time being there will be a list to contain users
+    /**
+     *
+     * @return
      */
     public static ObservableList<Customers> getObservableListOfCust() {
         return ObservableListOfCust;
@@ -57,19 +66,34 @@ public class schemaAdmin {
     private static ObservableList<Appointments> ObservableListOfAppts = FXCollections.observableArrayList();    
     private static ObservableList<Contacts> ObservableListOfContacts = FXCollections.observableArrayList();
 
-
+    /**
+     *
+     * @param c
+     */
     public static void addContacts(Contacts c){
         getObservableListOfContacts().add(c);
     }
     
+    /**
+     *
+     * @param newCust
+     */
     public static void addCust(Customers newCust){
         getObservableListOfCust().add(newCust);
     }
     
+    /**
+     *
+     * @param newUser
+     */
     public static void addUser(Users newUser){
         getObservableListOfUsers().add(newUser);
     }
 
+    /**
+     *
+     * @param appt
+     */
     public static void addAppts(Appointments appt){
         getObservableListOfAppt().add(appt);
     }

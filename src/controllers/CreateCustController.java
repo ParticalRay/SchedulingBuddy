@@ -24,12 +24,17 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import java.sql.PreparedStatement;
+import java.util.Locale;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.text.Text;
 
 
 /**
  * FXML Controller class
- *
- * @author jonat
+ *  Controls the creation of new customers.
+ * 
  */
 public class CreateCustController implements Initializable {
     Stage stage;
@@ -50,59 +55,119 @@ public class CreateCustController implements Initializable {
     private Button cancelButton;
     @FXML
     private TextField stateField;
+    @FXML
+    private Text nameTextTrans;
+    @FXML
+    private Text addressTextTrans;
+    @FXML
+    private Text stateTextTrans;
+    @FXML
+    private Text postalTextTrans;
+    @FXML
+    private Text phoneTextTrans;
+    @FXML
+    private Text titleTextTrans;
 
     /**
-     * Initializes the controller class.
+     * Initializes the controller class.Initial loading of information into the fxml.
+     * @param url 
+     * @param rb 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        String langInUse = Locale.getDefault().toString().split("_")[0];
+        String region = Locale.getDefault().toString().split("_")[1];
+        if (langInUse.equals("fr")){
+            titleTextTrans.setText("modificateur de rendez-vous");
+            
+            nameTextTrans.setText("Titre");
+            addressTextTrans.setText("adresse");
+            postalTextTrans.setText("code postal");
+            phoneTextTrans.setText("téléphoner");
+            confirmButton.setText("confirmer");
+            resetButton.setText("réinitialiser");
+            cancelButton.setText("Annuler");
+        }
     }    
     
-    int savedID = 0;
-    
+  
+    /**
+     * Confirm create will create a new customer object based on the information 
+     *  provided in the text fields.
+     * @param event Confirm button pressed
+     * @throws IOException Loading the main fxml after creation tasks
+     */
     @FXML
     private void confirmCreate(ActionEvent event) throws IOException {
         //Confirm creation of new customer object
-        String name = nameText.getText();
-        String address = addressText.getText();
-        String zip = zipText.getText();
-        String phone = phoneText.getText();
-        Customers newCust = new Customers(name,address,zip,phone);
-        
-        createAndUpdate(newCust);
-        
-        
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
-        
+       
+        Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> result = warning.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String name = nameText.getText();
+            String address = addressText.getText();
+            String zip = zipText.getText();
+            String phone = phoneText.getText();
+            Customers newCust = new Customers(name,address,zip,phone);
+
+            createAndUpdate(newCust);
+
+
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        } 
     }
     
-    
-    
-
+    /**
+     * Reset page will return all fields to default values
+     * @param event reset button clicked
+     */
     @FXML
     private void resetPage(ActionEvent event) {
         //Reset to default
-        nameText.clear();
-        addressText.clear();
-        zipText.clear();
-        phoneText.clear();
-        stateField.clear();
+        try{
+            Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
+            Optional<ButtonType> result = warning.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                nameText.clear();
+                addressText.clear();
+                zipText.clear();
+                phoneText.clear();
+                stateField.clear();
+            }
+        }catch(Exception e){
+        }
     }
 
+    /**
+     * Cancel creation will cancel the tasks and go back to the main fxml 
+     * @param event cancel button pressed
+     * @throws IOException loading the main fxml
+     */
     @FXML
     private void cancelCreation(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        try{
+            Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
+            Optional<ButtonType> result = warning.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
+        }catch(Exception e){
+            
+        }
     }
     
-    
-    //creating and updating to database
+    /**
+     * create and update will take the newly created customer and add it into 
+     *  the database.
+     * @param c new customer object
+     */
     public void createAndUpdate(Customers c){
         String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
         String user = "U07jSy";
@@ -125,14 +190,17 @@ public class CreateCustController implements Initializable {
             stmt.setString(4,c.getPostal());
             stmt.setString(5,schemaAdmin.getUser().getUser_Name());
             stmt.execute();
-           
-            
         }catch (SQLException e){
             e.printStackTrace();
         }
         }
     
-    
+    /**
+     * get division from db will obtain the division id from the database by 
+     *  using the state that is provided in the text field
+     * @param c Connection to the database
+     * @return the integer of the id
+     */
     private int getDivisionFromDb(Connection c){
         String search = "select Division_ID from first_level_divisions where division = ?";
         PreparedStatement stmt = null;

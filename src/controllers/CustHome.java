@@ -10,12 +10,8 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,13 +26,14 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import alpha.SchedulingBuddy;
+import java.util.Locale;
 import javafx.scene.control.Alert;
+import javafx.scene.text.Text;
 import model.Appointments;
 
 /**
  * FXML Controller class
- *
- * @author jonat
+ * Main fxml controller. All fxml will return to this form.
  */
 public class CustHome implements Initializable {
 
@@ -91,8 +88,12 @@ public class CustHome implements Initializable {
     private TableColumn<Appointments, Integer> custIDCol;
     @FXML
     private Button deleteApptButton;
+    @FXML
+    private Text titleText;
     /**
-     * Initializes the controller class.
+     * Initializes the controller class.Preload information into the tables to be observated and modified.
+     * @param ul 
+     * @param rb 
      */
     @Override
     public void initialize(URL ul, ResourceBundle rb) {
@@ -120,8 +121,41 @@ public class CustHome implements Initializable {
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("End"));
         custIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+        
+        String langInUse = Locale.getDefault().toString().split("_")[0];
+        String region = Locale.getDefault().toString().split("_")[1];
+        if (langInUse.equals("fr")){
+            titleText.setText("Planification");
+            IDCol.setText("identifiant");
+            NameCol.setText("Nom");
+            AddressCol.setText("adresse");
+            ZipCol.setText("code postal");
+            PhoneCol.setText("téléphoner");
+            createCustButton.setText("créer");
+            ModifyCustButton.setText("modifier");
+            DeleteCustButton.setText("effacer");
+            createApptButton.setText("créer un rendez-vous");
+            modifyApptButton.setText("modifier le rendez-vous");
+            apptIDCol.setText("identifiant");
+            titleCol.setText("Titre");
+            descCol.setText("la description");
+            locCol.setText("emplacement");
+            typeCol.setText("taper");
+            startDateCol.setText("date de début");
+            endDateCol.setText("date de fin");
+            contactCol.setText("Contacts");
+            exitButton.setText("sortir");
+            custIDCol.setText("identifiant");
+            deleteApptButton.setText("supprimer un rendez-vous");
+            
+        }
     }    
 
+    /**
+     * Create cust will move the form to the create cust fxml 
+     * @param event create button pressed
+     * @throws IOException exception being thrown 
+     */
     @FXML
     private void createCust(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -129,11 +163,13 @@ public class CustHome implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
     
-    
-    
-    
+    /**
+     * Modify cust will take the highlighted customer object and send it the 
+     *  the modify cust fxml to be modified.
+     * @param event modify button pressed
+     * @throws IOException exception being thrown
+     */
     @FXML
     private void modifyCust(ActionEvent event) throws IOException {
         try{
@@ -145,9 +181,6 @@ public class CustHome implements Initializable {
             Customers cust = CustTable.getSelectionModel().getSelectedItem();
             MCController.setCustomer(cust);
             schemaAdmin.getObservableListOfCust().remove(cust);
-
-
-
             stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
             Parent scene = loader.getRoot();
             stage.setScene(new Scene(scene));
@@ -159,7 +192,12 @@ public class CustHome implements Initializable {
         }
     }
 
-    
+    /**
+     * get started will create the connection to the database and return 
+     *  the connection object
+     * @return connection object
+     * @throws SQLException sql issue being thrown
+     */
     public Connection getStarted() throws SQLException{
         try{
             String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
@@ -179,27 +217,41 @@ public class CustHome implements Initializable {
         }
     }
     
+    /**
+     * delete cust will take the highlighted customer object and delete it
+     *  from the database and the list maintained on the application. 
+     * @param event delete button clicked
+     */
     @FXML
     private void deleteCust(ActionEvent event) {
-        Customers cust = CustTable.getSelectionModel().getSelectedItem();
-        deleteCustInDb(cust);
+        try{
+            Customers cust = CustTable.getSelectionModel().getSelectedItem();
+            deleteCustInDb(cust);
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select a customer to delete");
+            alert.showAndWait();
+        }
         
     }
 
+    /**
+     * create appt will take the highlighted customer object and send it
+     *  to the appointment create fxml to create an appointment
+     * @param event create appointment button
+     * @throws IOException fxml loading
+     */
     @FXML
     private void createAppt(ActionEvent event) throws IOException {
-        /*
-        Here we need to create an appt, then send to the db to receive the correct
-            appt ID, then bring it back and auto fill the info with what we know.
-            Step 1: Get customer ID the appt is attached to.
-            Step 2: Get User Id attached to the creation
-            Step 3: Get the contact the appt is going for. (Default 1)
-            
-        */
         
-        Customers c = CustTable.getSelectionModel().getSelectedItem();
-        System.out.println("Cust Home got: " + c);
         try{
+            Customers c = CustTable.getSelectionModel().getSelectedItem();
+            if (c==null){
+                NullPointerException nullPointer = new NullPointerException(); 
+                throw nullPointer;
+            }
+            System.out.println("Cust Home got: " + c);
+        
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/views/AppointmentCreate.fxml"));
             loader.load();
@@ -219,7 +271,11 @@ public class CustHome implements Initializable {
         
     }
     
-    
+    /**
+     * delete cust in db will take the customer object and use its id to find the 
+     *  matching customer and delete it and the appointment assigned to it. 
+     * @param c customer object
+     */
     private void deleteCustInDb(Customers c){
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -253,6 +309,11 @@ public class CustHome implements Initializable {
         }
     }
     
+    /**
+     * delet appt will take the appointment object and delete the matching appt
+     *  inside the db using the appt id
+     * @param a appointment id
+     */
     private void deleteAppt(Appointments a){
         String deleteAppt = "delete from appointments where Appointment_ID = ?";
         schemaAdmin.getObservableListOfAppt().remove(a);
@@ -271,34 +332,61 @@ public class CustHome implements Initializable {
         }
     }
 
+    /**
+     * modify appt will take the selected appointment and preload the fxml with
+     *  the appointment objects information. 
+     * @param event modify appointment button pressed
+     * @throws IOException fxml loading
+     */
     @FXML
     private void modifyAppt(ActionEvent event) throws IOException {
-        Appointments appt = apptTable.getSelectionModel().getSelectedItem();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/views/ModifyAppointment.fxml"));
-        loader.load();
+        try{
+            Appointments appt = apptTable.getSelectionModel().getSelectedItem();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/ModifyAppointment.fxml"));
+            loader.load();
 
-        ModifyAppointmentController MAController = loader.getController();
-        
-        MAController.setCurrentAppt(appt);
+            ModifyAppointmentController MAController = loader.getController();
+
+            MAController.setCurrentAppt(appt);
 
 
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
-        Parent scene = loader.getRoot();
-        stage.setScene(new Scene(scene));
-        stage.show();
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Please select an appointment to modify");
+                alert.showAndWait();
+        }
         
         
     }
 
+    /**
+     * Exit will close the application
+     * @param event exit button pressed
+     */
     @FXML
     private void exit(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * delete appt will take the selected appointment object and send it to the 
+     *  deleteAppt method to delete the corresponding appointment in the db. 
+     * @param event delete appointment button is pressed
+     */
     @FXML
     private void deleteAppt(ActionEvent event) {
-        Appointments apt = apptTable.getSelectionModel().getSelectedItem();
-        deleteAppt(apt);
+        try{
+            Appointments apt = apptTable.getSelectionModel().getSelectedItem();
+            deleteAppt(apt);
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Please select an appointment to delete");
+            alert.showAndWait();
+        }
     }
 }

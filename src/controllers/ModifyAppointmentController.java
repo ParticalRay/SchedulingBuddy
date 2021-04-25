@@ -32,6 +32,8 @@ import java.util.logging.Logger;
 import java.sql.Statement;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Locale;
+import javafx.scene.text.Text;
 import model.Contacts;
 import model.Customers;
 
@@ -74,10 +76,34 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactsCombo;
     private Appointments appt;
+    @FXML
+    private Text aptTitleText;
+    @FXML
+    private Text titleText;
+    @FXML
+    private Text idTextTrans;
+    @FXML
+    private Text descTextTrans;
+    @FXML
+    private Text localTextTrans;
+    @FXML
+    private Text typeTextTrans;
+    @FXML
+    private Text startDateTextTrans;
+    @FXML
+    private Text endDateTextTrans;
+    @FXML
+    private Text contactTextTrans;
+    @FXML
+    private Text startTimeTextTrans;
+    @FXML
+    private Text endTimeTextTrans;
 
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,24 +113,23 @@ public class ModifyAppointmentController implements Initializable {
         endCombo.getItems().addAll("9 Am","10 Am","11 Am","12 Pm","1 Pm",
                     "2 Pm","3 Pm", "4 Pm", "5 Pm");
         
-        /*
-        titleBox.setText(getCurrentAppt().getTitle());
-        DesBox.setText(getCurrentAppt().getDescription());
-        localBox.setText(getCurrentAppt().getLocation());
-        typeBox.setText(getCurrentAppt().getType());
-        System.out.println(getCurrentAppt().getStart());
-        System.out.println(getCurrentAppt().getEnd());
-        int contactID = getCurrentAppt().getContact_ID();
-        String contactName = null;
-        for (Contacts i:schemaAdmin.getObservableListOfContacts()){
-            if (i.getContact_ID() == contactID){
-                contactName = i.getContact_Name();
-            } else {
-                System.out.println("Contacts missing");
-            }
-        }
-        contactsCombo.setValue(contactName);
-        */
+        String langInUse = Locale.getDefault().toString().split("_")[0];
+        String region = Locale.getDefault().toString().split("_")[1];
+        if (langInUse.equals("fr")){
+            titleText.setText("modificateur de rendez-vous");
+            idTextTrans.setText("identifiant de rendez-vous");
+            aptTitleText.setText("Titre");
+            descTextTrans.setText("la description");
+            localTextTrans.setText("emplacement");
+            typeTextTrans.setText("taper");
+            startDateTextTrans.setText("date de début");
+            endDateTextTrans.setText("date de fin");
+            contactTextTrans.setText("Contacts");
+            startTimeTextTrans.setText("Heure de début");
+            endTimeTextTrans.setText("heure de fin");
+            confirmButton.setText("confirmer");
+            resetButton.setText("réinitialiser");
+            cancelButton.setText("Annuler");
         
         try {
             //Must add Contacts later
@@ -124,12 +149,20 @@ public class ModifyAppointmentController implements Initializable {
             System.out.println(ex);
         }
         
-    }   
+    }   }
     
+    /**
+     *
+     * @param c
+     */
     public void getCustID(Customers c){
         currentCustID = c;
     }
     
+    /**
+     *
+     * @param appt
+     */
     public void setCurrentAppt(Appointments appt){
         this.appt = appt;
         
@@ -178,6 +211,11 @@ public class ModifyAppointmentController implements Initializable {
         contactsCombo.setValue(contactName);
         
     }
+
+    /**
+     *
+     * @return
+     */
     public Appointments getCurrentAppt(){
         return appt;
     }
@@ -270,6 +308,11 @@ public class ModifyAppointmentController implements Initializable {
         stage.show();
     }
     
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public Connection getStarted() throws SQLException{
         String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
         String user = "U07jSy";
