@@ -29,6 +29,8 @@ import javafx.scene.control.Alert;
 import model.Users;
 import model.schemaAdmin;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * FXML Controller class
@@ -57,6 +59,8 @@ public class UserLoginController implements Initializable {
     private Text passTextTrans;
 
     private int attempts = 0;
+    
+    private String langInUse;
 
     /**
      * Initializes the controller class.
@@ -66,9 +70,13 @@ public class UserLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        String langInUse = Locale.getDefault().toString().split("_")[0];
+        langInUse = Locale.getDefault().toString().split("_")[0];
         String region = Locale.getDefault().toString().split("_")[1];
-        zoneID.setText(region);
+        
+        String timezone = ZonedDateTime.now(ZoneId.systemDefault()).toString();
+        ZoneId z = ZoneId.systemDefault();
+        System.out.println(z);
+        zoneID.setText(z.toString());
         if (langInUse.equals("fr")) {
             userTextTrans.setText("Nom d'utilisateur");
             passTextTrans.setText("le mot de passe");
@@ -88,25 +96,33 @@ public class UserLoginController implements Initializable {
     @FXML
     private void submitLogin(ActionEvent event) throws IOException, SQLException {
         attempts += 1;
+        FileWriter writer = new FileWriter("login_activity.txt", true);
         if (verifyLogin()) {
+            writer.write("Login attempts: " + attempts + " Login Date and Time: "
+                        + LocalDateTime.now() + " Passed \n");
+            writer.close();
             stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/views/CustHome.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
         } else {
             try {
-                FileWriter writer = new FileWriter("login_activity.txt", true);
+                
                 writer.write("Login attempts: " + attempts + " Login Date and Time: "
-                        + LocalDateTime.now() + "\n");
-
+                        + LocalDateTime.now() + " Failed \n");
                 writer.close();
 
             } catch (IOException e) {
 
             }
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Incorrect Login information. Please try again.");
-            alert.showAndWait();
+            if(langInUse.equals("fr")){
+                alert.setContentText("Informations de connexion incorrectes. Veuillez réessayer.");
+                alert.showAndWait();
+            }else{
+                alert.setContentText("Incorrect Login information. Please try again.");
+                alert.showAndWait();
+            }
         }
     }
 

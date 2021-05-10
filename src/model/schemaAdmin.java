@@ -1,6 +1,7 @@
 
 package model;
 
+import java.util.Hashtable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -65,6 +66,14 @@ public class schemaAdmin {
     private static ObservableList<Customers> ObservableListOfCust = FXCollections.observableArrayList();
     private static ObservableList<Appointments> ObservableListOfAppts = FXCollections.observableArrayList();    
     private static ObservableList<Contacts> ObservableListOfContacts = FXCollections.observableArrayList();
+    
+    private static Hashtable<String,Integer> typeCollection = new Hashtable<String,Integer>();
+
+    public static Hashtable<String, Integer> getTypeCollection() {
+        return typeCollection;
+    }
+    
+    
 
     /**
      *

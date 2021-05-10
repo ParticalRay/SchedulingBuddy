@@ -107,9 +107,9 @@ public class AppointmentCreateController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         startCombo.getItems().addAll("8 Am","9 Am","10 Am","11 Am","12 Pm","1 Pm",
-                    "2 Pm","3 Pm", "4 Pm");
+                    "2 Pm","3 Pm", "4 Pm", "5 Pm", "6 Pm","7 Pm","8 Pm","9 Pm");
         endCombo.getItems().addAll("9 Am","10 Am","11 Am","12 Pm","1 Pm",
-                    "2 Pm","3 Pm", "4 Pm", "5 Pm");
+                    "2 Pm","3 Pm", "4 Pm", "5 Pm","6 Pm","7 Pm","8 Pm","9 Pm", "10 Pm");
         String langInUse = Locale.getDefault().toString().split("_")[0];
         String region = Locale.getDefault().toString().split("_")[1];
         if (langInUse.equals("fr")){
@@ -174,20 +174,39 @@ public class AppointmentCreateController implements Initializable {
             String desc = DesBox.getText();
             String loc = localBox.getText();
             String type = typeBox.getText();
+            
+            if (startCombo.getValue().split(" ")[1].equals("Pm")){
+                startTime +=12;
+            }
+            if (endCombo.getValue().split(" ")[1].equals("Pm")){
+                endTime +=12;
+            }
             String startDateTime = originalStart + " " + startTime + ":00:00";
             String endDateTime = originalEnd + " " + endTime + ":00:00"; //Combine date and time can split to get info
             String createdBy = schemaAdmin.getUser().getUser_Name();
             String contactName = contactsCombo.getValue();
+            
             int contactsID = 0;
+            Contacts savedContact = null;
             for (Contacts i:schemaAdmin.getObservableListOfContacts()){
                 if (i.getContact_Name().equals(contactName)){
                     contactsID = i.getContact_ID();
+                    savedContact = i;
                     break;
                 }
                 else{
                     System.out.println("Something went wrong");
                 }
             }
+            for (Appointments appt : schemaAdmin.getObservableListOfAppt()){
+                if(appt.getStart().equals(startDateTime) && 
+                    appt.getEnd().equals(endDateTime) && 
+                    savedContact.getContact_ID() == appt.getContact_ID()){
+                    System.out.println("Found an appointment already at this time");
+                }
+            }
+            
+            
 
             int userID = schemaAdmin.getUser().getUser_ID();
 

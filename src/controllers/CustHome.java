@@ -26,10 +26,28 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import alpha.SchedulingBuddy;
+import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import model.Appointments;
+import java.sql.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.util.Callback;
+import model.Type;
 
 /**
  * FXML Controller class
@@ -79,7 +97,7 @@ public class CustHome implements Initializable {
     @FXML
     private TableColumn<Appointments, Integer> contactCol;
     @FXML
-    private TableColumn<Appointments, Integer> typeCol;
+    private TableColumn<Appointments, String> typeCol;
     @FXML
     private TableColumn<Appointments, String> startDateCol;
     @FXML
@@ -90,6 +108,26 @@ public class CustHome implements Initializable {
     private Button deleteApptButton;
     @FXML
     private Text titleText;
+    @FXML
+    private RadioButton defaultTableButton;
+    @FXML
+    private ToggleGroup views;
+    @FXML
+    private RadioButton weeklyTableButton;
+    @FXML
+    private RadioButton monthlyTableButton;
+    @FXML
+    private TableView<Type> typeApptTable;
+    @FXML
+    private TableColumn<Type, String> monthCol;
+    @FXML
+    private TableColumn<Type, Integer> countCol;
+    @FXML
+    private Button contactScheduleButton;
+    @FXML
+    private TableColumn<Type, String> countTypeCol;
+    
+    private ObservableList<Type> typeList = FXCollections.observableArrayList();
     /**
      * Initializes the controller class.Preload information into the tables to be observated and modified.
      * @param ul 
@@ -99,6 +137,7 @@ public class CustHome implements Initializable {
     public void initialize(URL ul, ResourceBundle rb) {
         schemaAdmin.getObservableListOfCust().clear();
         schemaAdmin.getObservableListOfAppt().clear();
+        
         try{
             SchedulingBuddy.connectAndUpdate();
         }catch (SQLException e){
@@ -121,6 +160,44 @@ public class CustHome implements Initializable {
         startDateCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
         endDateCol.setCellValueFactory(new PropertyValueFactory<>("End"));
         custIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+        
+        
+        try{
+            String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";
+            String user = "U07jSy";
+            String pass = "53689047995";
+            String dbName = "WJ07jSy";
+            String port = "3306";
+            String url = "jdbc" + ":mysql:" + serverName;
+
+
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT count(distinct Type) as 'Number of appointments by type',\n" +
+                "Type, Start\n" +
+                "from appointments\n" +
+                "group by Type,Start;");
+            
+            while (rs.next()){
+                int count = rs.getInt("Number of appointments by type");
+                String type = rs.getString("Type");
+                Date startDate = rs.getDate("Start");
+                String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+                String month = monthNames[startDate.getMonth()];
+                System.out.println("Count: " + count);
+                System.out.println("Type: " + type);
+                System.out.println("Month: " + month);
+                Type newEntry = new Type(count, type, month);
+                typeList.add(newEntry);
+            }
+        }catch(SQLException e){
+            
+        }
+        
+        typeApptTable.setItems(typeList);
+        monthCol.setCellValueFactory(new PropertyValueFactory<>("Month"));
+        countCol.setCellValueFactory(new PropertyValueFactory<>("Count"));
+        countTypeCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
         
         String langInUse = Locale.getDefault().toString().split("_")[0];
         String region = Locale.getDefault().toString().split("_")[1];
@@ -147,10 +224,61 @@ public class CustHome implements Initializable {
             exitButton.setText("sortir");
             custIDCol.setText("identifiant");
             deleteApptButton.setText("supprimer un rendez-vous");
+        }
+        LocalTime lt = ZonedDateTime.now(ZoneId.systemDefault()).toLocalTime();
+        
+        schemaAdmin.getObservableListOfAppt().forEach(app -> {
+            //System.out.println("Appointment start time: " + app.getStart().split(" ")[1]);
+            LocalTime startTime = LocalTime.parse(app.getStart().split(" ")[1]);
+            int minTillStart = (int)startTime.until(lt, ChronoUnit.MINUTES);
+            
+            if (minTillStart <= 15){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                if (langInUse.equals("fr")){
+                    alert.setContentText("Rendez-vous à venir dans quelques %s minutes.".replace("%s", minTillStart*-1+"")
+                        + " Identification de rendez-vous: " + app.getAppointment_ID()
+                        + " Début du rendez-vous " + app.getStart()
+                        + " Fin de rendez-vous: " + app.getEnd());
+                    alert.show();
+                }else{
+                alert.setContentText("Appointment upcoming in %s minutes.".replace("%s", minTillStart*-1+"")
+                        + " Appointment ID: " + app.getAppointment_ID()
+                        + " Appointment start " + app.getStart()
+                        + "End time: " + app.getEnd());
+                alert.show();
+                }
+            }
+        });
+        
+        /*
+        for (Appointments app : schemaAdmin.getObservableListOfAppt()){
+            System.out.println("Appointment start time: " + app.getStart().split(" ")[1]);
+            LocalTime startTime = LocalTime.parse(app.getStart().split(" ")[1]);
+            int minTillStart = (int)startTime.until(lt, ChronoUnit.MINUTES);
+            
+            if (minTillStart <= 15){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                if (langInUse.equals("fr")){
+                    alert.setContentText("Rendez-vous à venir dans quelques %s minutes.".replace("%s", minTillStart*-1+"")
+                        + " Identification de rendez-vous: " + app.getAppointment_ID()
+                        + " Début du rendez-vous " + app.getStart()
+                        + " Fin de rendez-vous: " + app.getEnd());
+                    alert.show();
+                }else{
+                alert.setContentText("Appointment upcoming in %s minutes.".replace("%s", minTillStart*-1+"")
+                        + " Appointment ID: " + app.getAppointment_ID()
+                        + " Appointment start " + app.getStart()
+                        + "End time: " + app.getEnd());
+                alert.show();
+                }
+            }
             
         }
+        */
     }    
-
+       
     /**
      * Create cust will move the form to the create cust fxml 
      * @param event create button pressed
@@ -226,7 +354,11 @@ public class CustHome implements Initializable {
     private void deleteCust(ActionEvent event) {
         try{
             Customers cust = CustTable.getSelectionModel().getSelectedItem();
-            deleteCustInDb(cust);
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            Optional<ButtonType> result = confirm.showAndWait();
+            if(result.get() == ButtonType.OK){
+                deleteCustInDb(cust);
+            }
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please select a customer to delete");
@@ -382,11 +514,32 @@ public class CustHome implements Initializable {
     private void deleteAppt(ActionEvent event) {
         try{
             Appointments apt = apptTable.getSelectionModel().getSelectedItem();
-            deleteAppt(apt);
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            Optional<ButtonType> result = confirm.showAndWait();
+            if(result.get() == ButtonType.OK){
+                deleteAppt(apt);
+            }
+            
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Please select an appointment to delete");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void defaultTable(ActionEvent event) {
+    }
+
+    @FXML
+    private void weeklyTable(ActionEvent event) {
+    }
+
+    @FXML
+    private void monthlyTable(ActionEvent event) {
+    }
+
+    @FXML
+    private void contactSchedule(ActionEvent event) {
     }
 }

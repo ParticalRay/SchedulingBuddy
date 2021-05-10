@@ -131,23 +131,7 @@ public class ModifyAppointmentController implements Initializable {
             resetButton.setText("réinitialiser");
             cancelButton.setText("Annuler");
         
-        try {
-            //Must add Contacts later
-            Connection conn = getStarted();
-            String grabContacts = "select * from contacts";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(grabContacts);
-            while (rs.next()){
-                int id = rs.getInt(1);
-                String name = rs.getString("Contact_Name");
-                String email = rs.getString("Email");
-                Contacts c = new Contacts(id, name, email);
-                schemaAdmin.addContacts(c);
-                contactsCombo.getItems().add(name);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
+        
         
     }   }
     
@@ -197,18 +181,34 @@ public class ModifyAppointmentController implements Initializable {
             endCombo.setValue(endTime + " Pm");
         }
         
-        
+        try {
+            
+            Connection conn = getStarted();
+            String grabContacts = "select * from contacts";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(grabContacts);
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString("Contact_Name");
+                String email = rs.getString("Email");
+                Contacts c = new Contacts(id, name, email);
+                schemaAdmin.addContacts(c);
+                contactsCombo.getItems().add(name);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
         int contactID = getCurrentAppt().getContact_ID();
+        System.out.println("Contact ID found: " + contactID);
         String contactName = null;
         for (Contacts i:schemaAdmin.getObservableListOfContacts()){
             if (i.getContact_ID() == contactID){
                 contactName = i.getContact_Name();
+                System.out.println("Contact name found: " + contactName);
                 break;
-            } else {
-                System.out.println("Contacts missing");
-            }
+            } 
         }
-        contactsCombo.setValue(contactName);
+        contactsCombo.getSelectionModel().select(contactName);
         
     }
 

@@ -10,7 +10,17 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.TimeZone;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Region;
 import model.Appointments;
+
 
 /**
  * Main javafx application. Initially starts the application and load up the 
@@ -18,6 +28,8 @@ import model.Appointments;
  * @author Jonathon Makepeace
  */
 public class SchedulingBuddy extends Application{
+   
+    private LocalDate ld = ZonedDateTime.now(ZoneId.systemDefault()).toLocalDate();
     
     
     /**
@@ -26,9 +38,13 @@ public class SchedulingBuddy extends Application{
      * @throws java.sql.SQLException
      */
     public static void main(String[] args) throws SQLException {
-      
+        
+        System.out.println(ZonedDateTime.now(ZoneId.systemDefault()).toLocalDate());
+        System.out.println(ZonedDateTime.now(ZoneId.systemDefault()).toLocalTime());
         connectAndUpdate();
         launch(args);
+        
+        
     }
     
    /**
@@ -61,6 +77,8 @@ public class SchedulingBuddy extends Application{
             Timestamp lastUpdate = rs.getTimestamp("Last_Update");
             String lastUpdateBy = rs.getString("Last_Updated_By");
             int divisionID = rs.getInt("Division_ID");
+            
+            
             Customers cx = new Customers(id, name, address, zip, phone, createDate, createBy, lastUpdate, lastUpdateBy, divisionID);
             
             schemaAdmin.addCust(cx);
@@ -82,6 +100,7 @@ public class SchedulingBuddy extends Application{
             String createdBy = rsAppt.getString("Created_By");
             String lastUpdate = rsAppt.getString("Last_Update");
             String lastUpdateBy = rsAppt.getString("Last_Updated_By");
+            schemaAdmin.getTypeCollection().put(type, 0);
             Appointments appt = new Appointments(id,title,desc,loc,type,start,end,createDate,createdBy,lastUpdate,lastUpdateBy,custID,userID,contactID);
             schemaAdmin.addAppts(appt);
         }
