@@ -109,9 +109,9 @@ public class ModifyAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         startCombo.getItems().addAll("8 Am","9 Am","10 Am","11 Am","12 Pm","1 Pm",
-                    "2 Pm","3 Pm", "4 Pm");
+                    "2 Pm","3 Pm", "4 Pm", "5 Pm", "6 Pm","7 Pm","8 Pm","9 Pm");
         endCombo.getItems().addAll("9 Am","10 Am","11 Am","12 Pm","1 Pm",
-                    "2 Pm","3 Pm", "4 Pm", "5 Pm");
+                    "2 Pm","3 Pm", "4 Pm", "5 Pm","6 Pm","7 Pm","8 Pm","9 Pm", "10 Pm");
         
         String langInUse = Locale.getDefault().toString().split("_")[0];
         String region = Locale.getDefault().toString().split("_")[1];
@@ -130,10 +130,24 @@ public class ModifyAppointmentController implements Initializable {
             confirmButton.setText("confirmer");
             resetButton.setText("réinitialiser");
             cancelButton.setText("Annuler");
-        
-        
-        
-    }   }
+        }
+        try {
+            Connection conn = getStarted();
+            String grabContacts = "select * from contacts";
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(grabContacts);
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString("Contact_Name");
+                String email = rs.getString("Email");
+                Contacts c = new Contacts(id, name, email);
+                schemaAdmin.addContacts(c);
+                contactsCombo.getItems().add(name);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
     
     /**
      *
@@ -160,12 +174,12 @@ public class ModifyAppointmentController implements Initializable {
         
         String[] temp = getCurrentAppt().getStart().split(" ");
         LocalDate startD = LocalDate.parse(temp[0]);
-        String startTime = temp[1].split(":")[0];
+        int startTime = Integer.parseInt(temp[1].split(":")[0]);
         int startT = Integer.parseInt(temp[1].split(":")[0]);
         
         String[] temp1 = getCurrentAppt().getEnd().split(" ");
         LocalDate endD = LocalDate.parse(temp1[0]);
-        String endTime = temp1[1].split(":")[0];
+        int endTime = Integer.parseInt(temp1[1].split(":")[0]);
         int endT = Integer.parseInt(temp1[1].split(":")[0]);
         
         startDate.setValue(startD);
@@ -173,12 +187,12 @@ public class ModifyAppointmentController implements Initializable {
         if (startT >=8 && startT <=11){
             startCombo.setValue(startTime + " Am");
         }else{
-            startCombo.setValue(startTime + " Pm");
+            startCombo.setValue(startTime - 12 + " Pm");
         }
         if (endT >=8 && endT <=11){
             endCombo.setValue(endTime + " Am");
         }else{
-            endCombo.setValue(endTime + " Pm");
+            endCombo.setValue(endTime - 12 + " Pm");
         }
         
         try {
@@ -240,6 +254,13 @@ public class ModifyAppointmentController implements Initializable {
         String desc = DesBox.getText();
         String loc = localBox.getText();
         String type = typeBox.getText();
+        
+        if (startCombo.getValue().split(" ")[1].equals("Pm")){
+                startTime +=12;
+            }
+        if (endCombo.getValue().split(" ")[1].equals("Pm")){
+            endTime +=12;
+        }
         String startDateTime = originalStart + " " + startTime + ":00:00";
         String endDateTime = originalEnd + " " + endTime + ":00:00"; //Combine date and time can split to get info
         String createdBy = schemaAdmin.getUser().getUser_Name();

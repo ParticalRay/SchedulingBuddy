@@ -2,29 +2,25 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyCustController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyCustController">
    <children>
       <VBox layoutX="16.0" layoutY="45.0" prefHeight="297.0" prefWidth="569.0">
          <children>
+            <HBox prefHeight="50.0" prefWidth="569.0" />
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text fx:id="idTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-                  <TextField fx:id="IDText" editable="false">
+                  <Text fx:id="nameTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="65.0" right="5.0" top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-               </children>
-            </HBox>
-            <HBox prefHeight="50.0" prefWidth="569.0">
-               <children>
-                  <Text fx:id="nameTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="nameText">
                      <HBox.margin>
                         <Insets bottom="5.0" left="45.0" right="5.0" top="5.0" />
@@ -34,28 +30,60 @@
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text fx:id="addressTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+                  <Text fx:id="addressTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="addressText">
                      <HBox.margin>
                         <Insets bottom="5.0" left="35.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <ComboBox fx:id="countryCombo" onAction="#changeDivisionInfo" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text fx:id="postalTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
+                  <Text fx:id="postalTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
                   <TextField fx:id="zipText">
                      <HBox.margin>
                         <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Division">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Text>
+                  <ComboBox fx:id="divisionCombo" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
                </children>
             </HBox>
             <HBox prefHeight="50.0" prefWidth="569.0">
                <children>
-                  <Text fx:id="phoneTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
-                  <TextField fx:id="phoneText" />
+                  <Text fx:id="phoneTextTrans" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Text>
+                  <TextField fx:id="phoneText">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextField>
                </children>
             </HBox>
             <HBox prefHeight="51.0" prefWidth="569.0" spacing="10.0">
@@ -77,6 +105,9 @@
             </HBox>
          </children>
       </VBox>
-      <Text fx:id="titleText" layoutX="247.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Customer Page" />
+      <Text fx:id="titleText" layoutX="225.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modify Customer Page">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Text>
    </children>
 </AnchorPane>

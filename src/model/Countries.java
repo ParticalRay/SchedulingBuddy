@@ -18,6 +18,11 @@ public class Countries {
     private String Created_By;
     private Date Last_Update;
     private String Last_Updated_By;
+    
+    public Countries(int id, String name){
+        this.Country_ID = id;
+        this.Country = name;
+    }
 
     /**
      *

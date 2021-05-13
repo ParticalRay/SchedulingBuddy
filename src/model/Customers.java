@@ -36,6 +36,21 @@ public class Customers {
         this.postal = postal;
         this.phone = phone;
     }
+    
+    /**
+     *
+     * @param name
+     * @param address
+     * @param postal
+     * @param phone
+     */
+    public Customers(String name, String address, String postal, String phone, int division) {
+        this.name = name;
+        this.address = address;
+        this.postal = postal;
+        this.phone = phone;
+        this.Division_ID = division;
+    }
 
     /**
      *
@@ -51,7 +66,7 @@ public class Customers {
         this.address = address;
         this.postal = postal;
         this.phone = phone;
-    }//Everything else is done in the back end
+    }
 
     /**
      *

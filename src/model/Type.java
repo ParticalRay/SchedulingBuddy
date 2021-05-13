@@ -1,6 +1,8 @@
 
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author jonat
@@ -16,6 +18,7 @@ public class Type {
         this.month = s;
     }
 
+ 
     public int getCount() {
         return count;
     }
