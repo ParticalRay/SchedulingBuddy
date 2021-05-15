@@ -39,8 +39,6 @@ public class SchedulingBuddy extends Application{
      */
     public static void main(String[] args) throws SQLException {
         
-        System.out.println(ZonedDateTime.now(ZoneId.systemDefault()).toLocalDate());
-        System.out.println(ZonedDateTime.now(ZoneId.systemDefault()).toLocalTime());
         connectAndUpdate();
         launch(args);
         

@@ -194,20 +194,24 @@ public class AppointmentCreateController implements Initializable {
                     savedContact = i;
                     break;
                 }
-                else{
-                    System.out.println("Something went wrong");
-                }
+                
             }
             for (Appointments appt : schemaAdmin.getObservableListOfAppt()){
                 if(appt.getStart().equals(startDateTime) && 
                     appt.getEnd().equals(endDateTime) && 
                     savedContact.getContact_ID() == appt.getContact_ID()){
-                    System.out.println("Found an appointment already at this time");
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        String langInUse = Locale.getDefault().toString().split("_")[0];
+                        String region = Locale.getDefault().toString().split("_")[1];
+                        if (langInUse.equals("fr")){
+                            alert.setContentText("There is already an appointment at this time");
+                            alert.showAndWait();
+                        }else{
+                            alert.setContentText("Il y a déjà un rendez-vous en ce moment");
+                            alert.showAndWait();
+                        } 
                 }
             }
-            
-            
-
             int userID = schemaAdmin.getUser().getUser_ID();
 
             Appointments appt = new Appointments(title,desc,loc,type, startDateTime,

@@ -40,10 +40,9 @@ import model.Countries;
  * @author jonat
  */
 public class ModifyCustController implements Initializable {
-    Customers cust;
+    private Customers cust;
     Stage stage;
     Parent scene;
-    private TextField IDText;
     @FXML
     private TextField nameText;
     @FXML
@@ -112,12 +111,12 @@ public class ModifyCustController implements Initializable {
             Alert warning = new Alert(Alert.AlertType.CONFIRMATION);
             Optional<ButtonType> result = warning.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                int id = Integer.parseInt(IDText.getText());
+                
                 String name = nameText.getText();
                 String address = addressText.getText();
                 String zip = zipText.getText();
                 String phone = phoneText.getText();
-                Customers newCust = new Customers(id,name,address,zip,phone);
+                Customers newCust = new Customers(this.cust.getID(),name,address,zip,phone);
                 schemaAdmin.addCust(newCust);
                 updateCustInDb(newCust);
                 stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -141,7 +140,6 @@ public class ModifyCustController implements Initializable {
             Optional<ButtonType> result = warning.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 this.cust = cust;
-                IDText.setText(String.valueOf(cust.getID()));
                 nameText.setText(String.valueOf(cust.getName()));
                 addressText.setText(String.valueOf(cust.getAddress()));
                 zipText.setText(String.valueOf(cust.getPostal()));
@@ -173,7 +171,7 @@ public class ModifyCustController implements Initializable {
      */
     public void updateCustInDb(Customers c){
         PreparedStatement stmt;
-        String update = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ? WHERE Customer_ID = ?";
+        String update = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
         
         try {
             Connection conn = getStarted();
@@ -184,6 +182,7 @@ public class ModifyCustController implements Initializable {
             stmt.setString(3, c.getPostal());
             stmt.setString(4, c.getPhone());
             stmt.setString(5, custID);
+            stmt.setInt(6, getDivisionFromDb());
             stmt.execute();
             
         } catch (SQLException e) {
@@ -198,11 +197,13 @@ public class ModifyCustController implements Initializable {
      */
     public void setCustomer(Customers cust){
         this.cust = cust;
-        IDText.setText(String.valueOf(cust.getID()));
         nameText.setText(String.valueOf(cust.getName()));
         addressText.setText(String.valueOf(cust.getAddress()));
         zipText.setText(String.valueOf(cust.getPostal()));
         phoneText.setText(String.valueOf(cust.getPhone()));
+        int custDivision = cust.getDivision_ID();
+        loadDivision(custDivision);
+        
     }
     
      /**
@@ -252,6 +253,27 @@ public class ModifyCustController implements Initializable {
             
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    private void loadDivision(int divisionID){
+        String search = "select Division, COUNTRY_ID from first_level_divisions where Division_ID = ?";
+        PreparedStatement stmt = null;
+        int countryID = 0;
+        String state = null;
+        try{
+            stmt = getStarted().prepareStatement(search);
+            stmt.setInt(1, divisionID);
+            ResultSet results = stmt.executeQuery();
+            while(results.next()){
+                state = results.getString("Division");
+                countryID = results.getInt("COUNTRY_ID");
+            }
+            Countries country = ObservableListOfCountries.get(countryID-1);
+            countryCombo.getSelectionModel().select(country.getCountry());
+            divisionCombo.getSelectionModel().select(state);
+        }catch(SQLException e){
+            
         }
     }
     

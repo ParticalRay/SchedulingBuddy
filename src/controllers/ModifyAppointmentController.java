@@ -33,6 +33,9 @@ import java.sql.Statement;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.text.Text;
 import model.Contacts;
 import model.Customers;
@@ -158,7 +161,8 @@ public class ModifyAppointmentController implements Initializable {
     }
     
     /**
-     *
+     * Send the appointment object from the list to load the text fields and
+     *  update the object
      * @param appt
      */
     public void setCurrentAppt(Appointments appt){
@@ -169,8 +173,6 @@ public class ModifyAppointmentController implements Initializable {
         DesBox.setText(getCurrentAppt().getDescription());
         localBox.setText(getCurrentAppt().getLocation());
         typeBox.setText(getCurrentAppt().getType());
-        System.out.println(getCurrentAppt().getStart());
-        System.out.println(getCurrentAppt().getEnd());
         
         String[] temp = getCurrentAppt().getStart().split(" ");
         LocalDate startD = LocalDate.parse(temp[0]);
@@ -213,12 +215,10 @@ public class ModifyAppointmentController implements Initializable {
             System.out.println(ex);
         }
         int contactID = getCurrentAppt().getContact_ID();
-        System.out.println("Contact ID found: " + contactID);
         String contactName = null;
         for (Contacts i:schemaAdmin.getObservableListOfContacts()){
             if (i.getContact_ID() == contactID){
                 contactName = i.getContact_Name();
-                System.out.println("Contact name found: " + contactName);
                 break;
             } 
         }
@@ -227,26 +227,26 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return appointment object
      */
     public Appointments getCurrentAppt(){
         return appt;
     }
     
 
+    /**
+     * Save the appointment object and verify the times. Get the information
+     *  from the text fields and auto adjust the time together. 
+     * @param event confirm button pressed
+     * @throws IOException fxml loading
+     */
     @FXML
     private void confirmAppointment(ActionEvent event) throws IOException {
         //'2021-04-18 01:34:42' year, month, day, then time
         
         String originalStart = startDate.getValue().toString();
         String originalEnd = endDate.getValue().toString();
-        /*
-        String[] temp1 = originalStart.split("-");
-        String year = temp1[0];
-        String month = temp1[1];
-        String day = temp1[2];
-        */
 
         int startTime = parseInt((String)startCombo.getValue().split(" ")[0]);
         int endTime = parseInt((String)endCombo.getValue().split(" ")[0]);
@@ -273,9 +273,6 @@ public class ModifyAppointmentController implements Initializable {
             if (i.getContact_Name().equals(contactName)){
                 contactsID = i.getContact_ID();
                 break;
-            }
-            else{
-                System.out.println("Something went wrong");
             }
         }
         
@@ -305,7 +302,6 @@ public class ModifyAppointmentController implements Initializable {
             stmt.setInt(9, userID);
             stmt.setInt(10, contactsID);
             stmt.setInt(11, getCurrentAppt().getAppointment_ID());
-            System.out.println(stmt);
             stmt.execute();
         }catch(SQLException e){
             System.out.println(e);
@@ -317,8 +313,19 @@ public class ModifyAppointmentController implements Initializable {
         
     }
 
+    /**
+     * Reset the form
+     * @param event button pressed
+     */
     @FXML
     private void resetForm(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure you would like to cancel?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            contactsCombo.getItems().clear();
+            setCurrentAppt(this.appt);
+        }
     }
 
     @FXML
@@ -330,9 +337,9 @@ public class ModifyAppointmentController implements Initializable {
     }
     
     /**
-     *
-     * @return
-     * @throws SQLException
+     * Get connection to the database
+     * @return connection object
+     * @throws SQLException sql 
      */
     public Connection getStarted() throws SQLException{
         String serverName = "//wgudb.ucertify.com:3306/WJ07jSy";

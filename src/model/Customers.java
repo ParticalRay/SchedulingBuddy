@@ -38,6 +38,14 @@ public class Customers {
     }
     
     /**
+     * 
+     * @param name 
+     */
+    public Customers(String name){
+        this.name = name;
+    }
+    
+    /**
      *
      * @param name
      * @param address
@@ -101,7 +109,7 @@ public class Customers {
     @Override
     public String toString(){
         return getID()+ ", " + getName() + ", " + getAddress() + ", "
-                + getPostal() +", " + getPhone();  
+                + getPostal() +", " + getPhone() + ", " + getDivision_ID();  
     }
 
     /**

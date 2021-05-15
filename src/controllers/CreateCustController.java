@@ -121,7 +121,7 @@ public class CreateCustController implements Initializable {
             String address = addressText.getText();
             String zip = zipText.getText();
             String phone = phoneText.getText();
-            Customers newCust = new Customers(name,address,zip,phone);
+            Customers newCust = new Customers(name,address,zip,phone,getDivisionFromDb());
 
             createAndUpdate(newCust);
 

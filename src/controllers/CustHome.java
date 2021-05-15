@@ -282,43 +282,15 @@ public class CustHome implements Initializable {
         schemaAdmin.getObservableListOfContacts().forEach(con -> {
             MenuItem newContact = new MenuItem(con.getContact_Name());
             newContact.setOnAction((ActionEvent event) -> {
-                System.out.println(con.getContact_Name());
-                
                 apptTable.setItems(filterContactsSchedule(con.getContact_Name()));
             });
             
             contactFilter.getItems().add(newContact);
      
-            System.out.println(con.getContact_Name());
         });
 
         numberOfCustField.setText(schemaAdmin.getObservableListOfCust().size() + "");
-        /*
-        for (Appointments app : schemaAdmin.getObservableListOfAppt()){
-            System.out.println("Appointment start time: " + app.getStart().split(" ")[1]);
-            LocalTime startTime = LocalTime.parse(app.getStart().split(" ")[1]);
-            int minTillStart = (int)startTime.until(lt, ChronoUnit.MINUTES);
-            
-            if (minTillStart <= 15){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-                if (langInUse.equals("fr")){
-                    alert.setContentText("Rendez-vous à venir dans quelques %s minutes.".replace("%s", minTillStart*-1+"")
-                        + " Identification de rendez-vous: " + app.getAppointment_ID()
-                        + " Début du rendez-vous " + app.getStart()
-                        + " Fin de rendez-vous: " + app.getEnd());
-                    alert.show();
-                }else{
-                alert.setContentText("Appointment upcoming in %s minutes.".replace("%s", minTillStart*-1+"")
-                        + " Appointment ID: " + app.getAppointment_ID()
-                        + " Appointment start " + app.getStart()
-                        + "End time: " + app.getEnd());
-                alert.show();
-                }
-            }
-            
-        }
-        */
+      
     }    
        
     /**
@@ -350,7 +322,6 @@ public class CustHome implements Initializable {
             ModifyCustController MCController = loader.getController();
             Customers cust = CustTable.getSelectionModel().getSelectedItem();
             MCController.setCustomer(cust);
-            schemaAdmin.getObservableListOfCust().remove(cust);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow(); 
             Parent scene = loader.getRoot();
             stage.setScene(new Scene(scene));
@@ -564,12 +535,20 @@ public class CustHome implements Initializable {
             alert.showAndWait();
         }
     }
-
+    
+    /**
+     * Default table view
+     * @param event button pressed
+     */
     @FXML
     private void defaultTable(ActionEvent event) {
         apptTable.setItems(schemaAdmin.getObservableListOfAppt());
     }
 
+    /**
+     * Weekly table view
+     * @param event button pressed
+     */
     @FXML
     private void weeklyTable(ActionEvent event) {
         LocalDate currentdate = LocalDate.now();
@@ -578,6 +557,10 @@ public class CustHome implements Initializable {
         
     }
 
+    /**
+     * Monthly table view
+     * @param event button pressed
+     */
     @FXML
     private void monthlyTable(ActionEvent event) {
         LocalDate currentdate = LocalDate.now();
@@ -586,6 +569,11 @@ public class CustHome implements Initializable {
         apptTable.setItems(filterByMonthAppointments);
     }
     
+    /**
+     * Convert contact id to contact name as a string
+     * @param id int id 
+     * @return string name or null if not existing anymore
+     */
     private String contactIDtoName(int id){
         for(Contacts c : schemaAdmin.getObservableListOfContacts()){
             if(c.getContact_ID() == id){
@@ -595,10 +583,16 @@ public class CustHome implements Initializable {
         return null;
     }
     
+    
     private ObservableList<Appointments> filterAppointments = FXCollections.observableArrayList();
     private ObservableList<Appointments> filterByMonthAppointments = FXCollections.observableArrayList();
     private ObservableList<Appointments> filterByWeekAppointments = FXCollections.observableArrayList();
     
+    /**
+     * Filter the appointments by month 
+     * @param month int month number
+     * @return a filtered list of appointments by the current month
+     */
     private ObservableList<Appointments> filterByMonth(int month){
         if(!(filterByMonthAppointments).isEmpty())
             filterByMonthAppointments.clear();
@@ -617,6 +611,10 @@ public class CustHome implements Initializable {
         }
     }
     
+    /**
+     * Filter the appointments by week
+     * @return the filtered list of appointments by the current week
+     */
     private ObservableList<Appointments> filterByWeek(){
         if(!(filterByWeekAppointments).isEmpty())
             filterByWeekAppointments.clear();
@@ -629,16 +627,7 @@ public class CustHome implements Initializable {
         int maxIndex = 6 - currentIndex;
         int minDay = currentdate.getDayOfMonth() - currentIndex;//ie that sunday
         int maxDay = currentdate.getDayOfMonth() + maxIndex;
-        System.out.println("Minimum Day: " + minDay);
-        System.out.println("Minimum Day: " + maxDay);
-        //Current issue is getting the split value as a day and not the remaining of the string
-        //Idea for solution is to convert start to full datetime object to pull ideal values or split with space
         for(Appointments app: schemaAdmin.getObservableListOfAppt()){
-            System.out.println("Ideal Month value inside string and from list: " + Integer.parseInt(app.getStart().split("-")[1]));
-            System.out.println("Ideal month value that is saved from local time: " + m.getValue());
-            System.out.println("Ideal day value from splitting in the string: " + Integer.parseInt(app.getStart().split("-")[2].split(" ")[0]));
-            //Get the current day and match appointments with the matching day
-           
             if (Integer.parseInt(app.getStart().split("-")[1]) == m.getValue()){
                 if (Integer.parseInt(app.getStart().split("-")[2].split(" ")[0]) >= minDay &&
                         Integer.parseInt(app.getStart().split("-")[2].split(" ")[0]) <=maxDay){
@@ -656,6 +645,11 @@ public class CustHome implements Initializable {
         }
     }
     
+    /**
+     * Filter the list of appointments by the contacts name
+     * @param name String name of the contact
+     * @return filtered list of appointments 
+     */
     private ObservableList<Appointments> filterContactsSchedule(String name){
         if(!(filterAppointments).isEmpty())
             filterAppointments.clear();

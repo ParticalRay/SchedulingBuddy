@@ -12,6 +12,12 @@ public class Type {
     private String name;
     private String month;
     
+    /**
+     * 
+     * @param c
+     * @param name
+     * @param s 
+     */
     public Type(int c, String name, String s){
         this.count = c;
         this.name = name;
