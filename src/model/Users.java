@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import java.util.Date;
 
 /**
- *
+ * Users is used to get automatic assigning to customers and modifications to 
+ *  them. 
  * @author jonat
  */
 public class Users {
@@ -21,7 +18,7 @@ public class Users {
     private String Last_Updated_By;
     
     /**
-     *
+     * Constructor
      * @param User_ID
      * @param User_Name
      * @param Password
@@ -82,7 +79,7 @@ public class Users {
 
     /**
      *
-     * @return
+     * @return lastUpdate
      */
     public Date getLast_Update() {
         return Last_Update;
@@ -90,7 +87,7 @@ public class Users {
 
     /**
      *
-     * @return
+     * @return lastUpdateBy
      */
     public String getLast_Updated_By() {
         return Last_Updated_By;

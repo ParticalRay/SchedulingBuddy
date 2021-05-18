@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import java.sql.Connection;
@@ -35,6 +31,8 @@ import javafx.scene.text.Text;
 import model.Countries;
 
 /**
+ * ModifyCustController will modify customer information based on the 
+ *  the fxml form changes.
  * FXML Controller class
  *
  * @author jonat
@@ -256,6 +254,11 @@ public class ModifyCustController implements Initializable {
         }
     }
     
+    /**
+     * loadDivision will pre-load the country and division combo boxes with the 
+     *  given division id integer. 
+     * @param divisionID 
+     */
     private void loadDivision(int divisionID){
         String search = "select Division, COUNTRY_ID from first_level_divisions where Division_ID = ?";
         PreparedStatement stmt = null;
@@ -277,6 +280,10 @@ public class ModifyCustController implements Initializable {
         }
     }
     
+    /**
+     * getDivisionFromDb will load the division id based on the divisions name
+     * @return int division id
+     */
      private int getDivisionFromDb(){
         String search = "select Division_ID from first_level_divisions where division = ?";
 
@@ -299,6 +306,9 @@ public class ModifyCustController implements Initializable {
         return -1;//Something went wrong 
     }
     
+    /**
+     * getCountryFromDb will load all countries into the list
+     */
     private void getCountryFromDb(){
         String search = "select * from countries";
         PreparedStatement stmt = null;
@@ -315,7 +325,7 @@ public class ModifyCustController implements Initializable {
         }catch(SQLException e){
             
         }
-    }//Need fxml method to load the data after a countrie is selected
+    }
     
     
     /**
@@ -335,6 +345,11 @@ public class ModifyCustController implements Initializable {
         return conn;
     }
 
+    /**
+     * changeDivisionInfo will load all divisions that match the given country
+     *  based on the matching country id in the database
+     * @param event button pressed
+     */
     @FXML
     private void changeDivisionInfo(ActionEvent event) {
         divisionCombo.getItems().clear();

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import java.io.IOException;
@@ -24,7 +20,6 @@ import javafx.stage.Stage;
 import model.Customers;
 import model.schemaAdmin;
 import java.sql.PreparedStatement;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Optional;
 import javafx.collections.FXCollections;
@@ -33,7 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.text.Text;
-import model.Contacts;
+
 import model.Countries;
 
 
@@ -225,6 +220,10 @@ public class CreateCustController implements Initializable {
         }
     }
     
+    /**
+     * getDivisionFromDb will load the division id based on the divisions name
+     * @return int division id
+    */
      private int getDivisionFromDb(){
         String search = "select Division_ID from first_level_divisions where division = ?";
 
@@ -247,6 +246,9 @@ public class CreateCustController implements Initializable {
         return -1;//Something went wrong 
     }
     
+     /**
+     * getCountryFromDb will load all countries into the list
+     */
     private void getCountryFromDb(){
         String search = "select * from countries";
         PreparedStatement stmt = null;
@@ -283,6 +285,11 @@ public class CreateCustController implements Initializable {
         return conn;
     }
 
+    /**
+     * changeDivisionInfo will load all divisions that match the given country
+     *  based on the matching country id in the database
+     * @param event button pressed
+     */
     @FXML
     private void changeDivisionInfo(ActionEvent event) {
         divisionCombo.getItems().clear();

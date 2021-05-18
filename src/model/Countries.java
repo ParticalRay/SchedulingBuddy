@@ -8,7 +8,8 @@ package model;
 import java.util.Date;
 
 /**
- *
+ * Countries is used to automatically keep track of countries once it has been
+ *  loaded from the database.
  * @author jonat
  */
 public class Countries {
@@ -19,6 +20,11 @@ public class Countries {
     private Date Last_Update;
     private String Last_Updated_By;
     
+    /**
+     * Constructor
+     * @param id
+     * @param name 
+     */
     public Countries(int id, String name){
         this.Country_ID = id;
         this.Country = name;

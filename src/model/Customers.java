@@ -8,7 +8,9 @@ package model;
 import java.util.Date;
 import java.sql.*;
 /**
- *
+ * Customers is the most used object in this application. It handles all 
+ *  information pertaining to the customer and can be used to register
+ *  with appointment objects.
  * @author jonat
  */
 public class Customers {
@@ -24,7 +26,7 @@ public class Customers {
     private int Division_ID;//FK
 
     /**
-     *
+     * Constructor
      * @param name
      * @param address
      * @param postal
@@ -46,7 +48,7 @@ public class Customers {
     }
     
     /**
-     *
+     * New constructor
      * @param name
      * @param address
      * @param postal

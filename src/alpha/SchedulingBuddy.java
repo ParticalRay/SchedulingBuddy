@@ -1,7 +1,6 @@
 
 package alpha;
 
-import java.util.Locale;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,14 +10,8 @@ import model.Customers;
 import model.schemaAdmin;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.TimeZone;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Region;
 import model.Appointments;
 
 

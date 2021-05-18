@@ -6,7 +6,8 @@
 package model;
 
 /**
- *
+ * Contacts is the advisor that will be meeting with the customer during these 
+ *  appointments. A contact will always be registered to an appointment. 
  * @author jonat
  */
 public class Contacts {
@@ -15,7 +16,7 @@ public class Contacts {
     private String Email;
     
     /**
-     *
+     * Constructor
      * @param id
      * @param name
      * @param email

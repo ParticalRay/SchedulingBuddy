@@ -4,7 +4,8 @@ package model;
 import java.sql.Date;
 
 /**
- *
+ * Type object is used to count the amount of meeting types based on each month
+ *  greater than 0
  * @author jonat
  */
 public class Type {

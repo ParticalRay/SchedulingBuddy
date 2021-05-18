@@ -8,7 +8,8 @@ package model;
 import java.util.Date;
 
 /**
- *
+ * Appointments is used to organize the customer object with the contacts object
+ *  and create a list based on given criteria. 
  * @author jonat
  */
 public class Appointments{
@@ -28,7 +29,7 @@ public class Appointments{
     private int Contact_ID;//FK
 
     /**
-     *
+     * Temp constructor
      * @param Title
      * @param Location
      */
@@ -38,7 +39,7 @@ public class Appointments{
     }
 
     /**
-     *
+     * Full constructor
      * @param Title
      * @param Description
      * @param Location

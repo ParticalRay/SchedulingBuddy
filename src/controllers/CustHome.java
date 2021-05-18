@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import java.io.IOException;
@@ -42,25 +38,19 @@ import javafx.scene.text.Text;
 import model.Appointments;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.input.InputMethodEvent;
-import javafx.util.Callback;
 import model.Contacts;
 import model.Type;
 
 /**
+ * CustHome is the main fxml that is loaded and updates the application's 
+ *  list of appointments, customers, and contacts. 
  * FXML Controller class
  * Main fxml controller. All fxml will return to this form.
  */
@@ -142,7 +132,18 @@ public class CustHome implements Initializable {
     @FXML
     private Text numberOfCustField;
     /**
-     * Initializes the controller class.Preload information into the tables to be observated and modified.
+     * Initializes the controller class.Preload information into the tables to 
+     *  be observated and modified.
+     * 
+     * I use 2 lambda functions in this initialize. One is used to check for 
+     *  the time till the next appointment and determine if it is less than 15
+     *  minutes. This is done because each appointment needs to be checked for 
+     *  time and lambda matches this perfectly. 
+     *  
+     * The second lambda is used to add contacts to the list and filter
+     *  the appointments based on the contact chosen. This is done because it 
+     *  is efficient to create a method to add contacts without creating a
+     *  function to accomplish the task. 
      * @param ul 
      * @param rb 
      */

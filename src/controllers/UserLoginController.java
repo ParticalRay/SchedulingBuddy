@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controllers;
 
 import java.io.FileWriter;
@@ -33,6 +29,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
+ * UserLoginController is the first fxml that is loaded and 
+ *  verifies the user based on database information. 
  * FXML Controller class
  *
  * @author Jonathon Makepeace
@@ -75,7 +73,6 @@ public class UserLoginController implements Initializable {
         
         String timezone = ZonedDateTime.now(ZoneId.systemDefault()).toString();
         ZoneId z = ZoneId.systemDefault();
-        System.out.println(z);
         zoneID.setText(z.toString());
         if (langInUse.equals("fr")) {
             userTextTrans.setText("Nom d'utilisateur");
@@ -151,8 +148,6 @@ public class UserLoginController implements Initializable {
                 String user = userText.getText();
                 String pass = passText.getText();
                 if (userName.equals(user) && password.equals(pass)) {
-                    System.out.println(userName);
-                    System.out.println(password);
                     int id = rs.getInt("User_ID");
                     Date createdDate = rs.getDate("Create_Date");
                     String createBy = rs.getString("Created_By");

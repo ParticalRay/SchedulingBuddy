@@ -8,7 +8,9 @@ package model;
 import java.util.Date;
 
 /**
- *
+ * The state/area the customer is in. Division is the name of the area/state.
+ * 
+ * Country id is the country the application can handle. 
  * @author jonat
  */
 public class FirstLevelDivision {
